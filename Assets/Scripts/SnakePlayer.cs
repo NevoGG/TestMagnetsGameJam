@@ -234,10 +234,6 @@ public class SnakePlayer : MonoBehaviour
             // <=====
             Grow();
         }
-
-        // if (CompareTag(PLAYER1_TAG) && col.tag == "Shot2") Destroy(this.gameObject);
-        // else if (this.tag == PLAYER2_TAG && col.tag == "Shot1") Destroy(this.gameObject);
-
         
     }
 
