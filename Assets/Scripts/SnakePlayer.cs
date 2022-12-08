@@ -151,7 +151,7 @@ public class SnakePlayer : MonoBehaviour
         }
 
         // ADDED for boarders
-        // dir = checkBoundries(dir);
+        dir = checkBoundries(dir);
 
         for (int i = segments.Count - 1; i > 0; i--)
         {
@@ -166,22 +166,15 @@ public class SnakePlayer : MonoBehaviour
         curDir = dir;
     }
 
+    // ADDED for boarders
     private Vector3 checkBoundries(Vector3 dir)
     {
         if (transform.position.x >= maxX || transform.position.x <= minX)
         {
-            if ((saveDir == Vector3.right && transform.position.x >= maxX) ||
-                (saveDir == Vector3.left && transform.position.x <= minX))
+            if ((saveDir == Vector3.right && transform.position.x >= maxX) || (saveDir == Vector3.left && transform.position.x <= minX))
             {
-                if (UnityEngine.Random.value < 0.5f)
-                {
-                    dir = new Vector3(0, 1, 0);
-                }
-                else
-                {
-                    dir = new Vector3(0, -1, 0);
-                }
-
+                if (UnityEngine.Random.value < 0.5f) { dir = new Vector3(0, 1, 0); }
+                else { dir = new Vector3(0, -1, 0); }
                 if (transform.position.x >= maxX)
                 {
                     transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
@@ -189,6 +182,24 @@ public class SnakePlayer : MonoBehaviour
                 else
                 {
                     transform.position = new Vector3(minX, transform.position.y, transform.position.z);
+                }
+            }
+        }
+
+        if (transform.position.y >= maxY || transform.position.y <= minY)
+        {
+            if ((saveDir == Vector3.up && transform.position.y >= maxY) || (saveDir == Vector3.down && transform.position.y <= minY))
+            {
+                if (UnityEngine.Random.value < 0.5f) { dir = Vector3.right; }
+                else { dir = Vector3.left; }
+
+                if (transform.position.y >= maxY)
+                {
+                    transform.position = new Vector3(transform.position.x, maxY, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(transform.position.x, minY, transform.position.z);
                 }
             }
         }
@@ -305,6 +316,16 @@ public class SnakePlayer : MonoBehaviour
         goMssg.gameObject.SetActive(true);
         yield return new WaitForSeconds(1);
         goMssg.gameObject.SetActive(false);
+
+        // ADDED for borders
+        transform.position = new Vector3(200, 0, 0);
+        p2.gameObject.transform.position = new Vector3(-200, 0, 0);
+        target = new Vector3(200, 0, 0);
+        p2.gameObject.GetComponent<SnakePlayer>().target = new Vector3(-200, 0, 0);
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        p2.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        // <-----
+
         playing = true;
         p2.gameObject.GetComponent<SnakePlayer>().playing = true;
         StartCoroutine(RespawnBites());
@@ -317,8 +338,8 @@ public class SnakePlayer : MonoBehaviour
         while (playing)
         {
             Debug.Log("Creating bite");
-            float xPlacement = UnityEngine.Random.Range(1, 450);
-            float yPlacement = UnityEngine.Random.Range(1, 250);
+            float xPlacement = UnityEngine.Random.Range(1, maxX);
+            float yPlacement = UnityEngine.Random.Range(1, maxY);
             if (UnityEngine.Random.value < 0.5f)
             {
                 xPlacement *= -1;
