@@ -54,7 +54,7 @@ public class BodyLink : MonoBehaviour, Linkable
             snakeParent.DestroyTail(linkNum);
         }
 
-        public Bםגטvoid setSnakeParent(SnakePlayer p)
+        public void setSnakeParent(SnakePlayer p)
         {
             snakeParent = p;
         }
