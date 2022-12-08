@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
 
-
+//minor change
 public class SnakePlayer : MonoBehaviour
 {
     [SerializeField] private Vector3 target;
