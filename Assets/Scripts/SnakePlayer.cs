@@ -48,6 +48,11 @@ public class SnakePlayer : MonoBehaviour
     private bool calledOnce = true;
     private int bodyDist = 25;
     // <=====
+    
+    private float maxX = 440;
+    private float minX = -440;
+    private float maxY = 220;
+    private float minY = -220;
 
 
 
@@ -164,7 +169,48 @@ public class SnakePlayer : MonoBehaviour
         if (dir.y != 0) saveDir = Vector3.up * dir.y;
         if (transform.position == target) target += saveDir;
 
-        
+        // ADDED for boarders
+        dir = checkBoundries(dir);
+        // <----
+        for (int i = segments.Count - 1; i > 0; i--)
+        {
+            segments[i].transform.position = segments[i - 1].transform.position - (saveDir * bodyDist);
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
+
+        if (dir.x != 0) saveDir = Vector3.right * dir.x;
+        if (dir.y != 0) saveDir = Vector3.up * dir.y;
+        if (transform.position == target) target += saveDir;
+    }
+
+    private Vector3 checkBoundries(Vector3 dir)
+    {
+        if (transform.position.x >= maxX || transform.position.x <= minX)
+        {
+            if ((saveDir == Vector3.right && transform.position.x >= maxX) ||
+                (saveDir == Vector3.left && transform.position.x <= minX))
+            {
+                if (UnityEngine.Random.value < 0.5f)
+                {
+                    dir = new Vector3(0, 1, 0);
+                }
+                else
+                {
+                    dir = new Vector3(0, -1, 0);
+                }
+
+                if (transform.position.x >= maxX)
+                {
+                    transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(minX, transform.position.y, transform.position.z);
+                }
+            }
+        }
+        return dir;
     }
 
     void Grow()
@@ -179,7 +225,7 @@ public class SnakePlayer : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    public void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Bite"))
         {
