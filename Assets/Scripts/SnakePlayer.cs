@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
@@ -12,6 +14,7 @@ public class SnakePlayer : MonoBehaviour
     [SerializeField] public Vector3 saveDir;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject gameMusic;
+    
     //audio sources:
     [SerializeField] AudioClip shotSound;
     [SerializeField] AudioClip changeDirectionSound;
@@ -29,9 +32,13 @@ public class SnakePlayer : MonoBehaviour
     
     public static SnakePlayer player1;
     public static SnakePlayer player2;
+
+    //saves current pressed key, to avoid redundant actions
+    private Vector3 curDir;
     
-
-
+    private static String PLAYER1_TAG = "Player1";
+    private static String PLAYER2_TAG = "Player2";
+    private static string BITE_TAG = "Bite";
 
     // added for general code
     public int speed = 100;
@@ -53,8 +60,6 @@ public class SnakePlayer : MonoBehaviour
     private float minX = -440;
     private float maxY = 220;
     private float minY = -220;
-
-
 
 
 
@@ -85,7 +90,7 @@ public class SnakePlayer : MonoBehaviour
     {
         if (!playing)   // added for general code
         {
-            if (this.tag == "Player1")
+            if (CompareTag(PLAYER1_TAG))
             {
                 if (Input.GetKey(KeyCode.RightShift))
                 {
@@ -100,7 +105,7 @@ public class SnakePlayer : MonoBehaviour
                     StartCoroutine(StartGame());            
                 }
             }     
-            else if (this.tag == "Player2")
+            else if (CompareTag(PLAYER2_TAG))
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -124,54 +129,30 @@ public class SnakePlayer : MonoBehaviour
 
     void Move()
     {
-        //play movement sound:
-
-        Vector3 dir = new Vector3(0,0,0);
-        if (this.tag == "Player1")
+        Vector3 dir = Vector3.zero;
+        if (CompareTag(PLAYER1_TAG))
         {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                audioSource.PlayOneShot(changeDirectionSound);
-                dir = new Vector3(0, 1, 0);
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                audioSource.PlayOneShot(changeDirectionSound);
-                dir = new Vector3(0, -1, 0);
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                audioSource.PlayOneShot(changeDirectionSound);
-                dir = new Vector3(1, 0, 0);
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                audioSource.PlayOneShot(changeDirectionSound);
-                dir = new Vector3(-1, 0, 0);
-            }
+            if (Input.GetKey(KeyCode.UpArrow)) dir = Vector3.up;
+            else if (Input.GetKey(KeyCode.DownArrow)) dir = Vector3.down;
+            else if (Input.GetKey(KeyCode.RightArrow)) dir = Vector3.right;
+            else if (Input.GetKey(KeyCode.LeftArrow)) dir = Vector3.left;
         }
-        else if (this.tag == "Player2")
+        else if (CompareTag(PLAYER2_TAG))
         {
-            if (Input.GetKey(KeyCode.W)) dir = new Vector3(0, 1, 0);
-            else if (Input.GetKey(KeyCode.S)) dir = new Vector3(0, -1, 0);
-            else if (Input.GetKey(KeyCode.D)) dir = new Vector3(1, 0, 0);
-            else if (Input.GetKey(KeyCode.A)) dir = new Vector3(-1, 0, 0);
-        }
-        
-        for (int i = segments.Count - 1; i > 0; i--)
-        {
-            segments[i].transform.position = segments[i - 1].transform.position - (saveDir * bodyDist);
+            if (Input.GetKey(KeyCode.W)) dir = Vector3.up;
+            else if (Input.GetKey(KeyCode.S)) dir = Vector3.down;
+            else if (Input.GetKey(KeyCode.D)) dir = Vector3.right;
+            else if (Input.GetKey(KeyCode.A)) dir = Vector3.left;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * speed);
-
-        if (dir.x != 0) saveDir = Vector3.right * dir.x;
-        if (dir.y != 0) saveDir = Vector3.up * dir.y;
-        if (transform.position == target) target += saveDir;
+        if (dir != Vector3.zero && curDir != Vector3.zero)
+        {
+            audioSource.PlayOneShot(changeDirectionSound); 
+        }
 
         // ADDED for boarders
-        dir = checkBoundries(dir);
-        // <----
+        // dir = checkBoundries(dir);
+
         for (int i = segments.Count - 1; i > 0; i--)
         {
             segments[i].transform.position = segments[i - 1].transform.position - (saveDir * bodyDist);
@@ -182,6 +163,7 @@ public class SnakePlayer : MonoBehaviour
         if (dir.x != 0) saveDir = Vector3.right * dir.x;
         if (dir.y != 0) saveDir = Vector3.up * dir.y;
         if (transform.position == target) target += saveDir;
+        curDir = dir;
     }
 
     private Vector3 checkBoundries(Vector3 dir)
@@ -216,18 +198,23 @@ public class SnakePlayer : MonoBehaviour
     void Grow()
     {
         Debug.Log("Growing");
-        GameObject body;
-        if (this.tag == "Player1"){body = Instantiate(Resources.Load("Player1Body")) as GameObject;}
-        else{body = Instantiate(Resources.Load("Player2Body")) as GameObject;}
-        body.transform.position = this.transform.position;
-        segments.Add(body);
+        GameObject bodyLink;
+        if (CompareTag(PLAYER1_TAG)){bodyLink = Instantiate(Resources.Load("Player1Body")) as GameObject;}
+        else{bodyLink = Instantiate(Resources.Load("Player2Body")) as GameObject;}
+        // BodyLink linkScript = bodyLink.GetComponent<BodyLink>();
+        if(!bodyLink.TryGetComponent(out Linkable linkable)) Debug.Log("Linkable failed");;
+        linkable.setSnakeParent(this);
+        linkable.setLinkNum(segments.Count);
+        //
+        bodyLink.transform.position = this.transform.position;
+        segments.Add(bodyLink);
         //body.transform.parent = this.transform;
         
     }
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Bite"))
+        if (col.gameObject.CompareTag(BITE_TAG))
         {
             // added for general code
             numPoints += 1;
@@ -237,10 +224,18 @@ public class SnakePlayer : MonoBehaviour
             Grow();
         }
 
-        if (this.tag == "Player1" && col.tag == "Shot2") Destroy(this.gameObject);
-        else if (this.tag == "Player2" && col.tag == "Shot1") Destroy(this.gameObject);
+        // if (CompareTag(PLAYER1_TAG) && col.tag == "Shot2") Destroy(this.gameObject);
+        // else if (this.tag == PLAYER2_TAG && col.tag == "Shot1") Destroy(this.gameObject);
 
         
+    }
+
+    public void DestroyTail(int fromIdx)
+    {
+        for (int i = fromIdx; i < segments.Count; i++)
+        {
+            Destroy(segments[i]);
+        }   
     }
 
     public void TerminateGame(String mssg)
