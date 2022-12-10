@@ -9,6 +9,8 @@ TagManager:
   - Player2
   - Shot1
   - Shot2
+  - Player1Body
+  - Player2Body
   layers:
   - Default
   - TransparentFX
