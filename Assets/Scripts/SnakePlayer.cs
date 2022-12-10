@@ -136,7 +136,6 @@ public class SnakePlayer : MonoBehaviour
 
             if (ready && p2.GetComponent<SnakePlayer>().ready && calledOnce)
             {
-                Debug.Log("Marked as Ready");
                 calledOnce = false;
                 StartCoroutine(StartGame());
             }
@@ -162,9 +161,9 @@ public class SnakePlayer : MonoBehaviour
         }
 
         // ADDED for boarders
-        dir = checkBoundries(dir);
+        //dir = checkBoundries(dir);
 
-        for (int i = segments.Count - 1; i > 0; i--)
+        //for (int i = segments.Count - 1; i > 0; i--)
         int index = 0;
         if (!IsInBoundaries()) ElectrocuteSnake();
         if(!isElectrocuted)
@@ -293,7 +292,7 @@ public class SnakePlayer : MonoBehaviour
         if(!lastLink.TryGetComponent(out Linkable last)) Debug.Log("linkable failed in grow");
         segments.Add(bodyLink);
     }
-    
+
     public void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag(BITE_TAG))
@@ -306,38 +305,6 @@ public class SnakePlayer : MonoBehaviour
         }
         
     }
-
-    public void DestroyTail(int fromIdx)
-    {
-        for (int i = fromIdx; i < segments.Count; i++)
-
-
-        //if (col.CompareTag(SHOT2_TAG) || col.CompareTag(SHOT1_TAG)) return; //shot collision handled in ballscript
-
-        //bool toTerminate = false;
-        //if (CompareTag(PLAYER1_TAG))
-        {
-            if (col.CompareTag(PLAYER1BODY_TAG))
-            {
-                col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 1) toTerminate = true;
-            }
-            else toTerminate = true;
-        }
-        
-        if (CompareTag(PLAYER2_TAG))
-        {
-            if (col.CompareTag(PLAYER2BODY_TAG))
-            {
-                col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 1) toTerminate = true;
-            }
-            else toTerminate = true;
-        }
-        if (toTerminate) TerminateGame(tag);
-    }
-
-
 
     public void DestroyTail(int fromIdx, string tag)
     {
@@ -358,7 +325,11 @@ public class SnakePlayer : MonoBehaviour
     
     public void StonifyTail(int fromIdx, string tag)
     {
-        if (CompareTag(tag)) TerminateGame(tag); //if hit head, terminate game
+        if (CompareTag(tag))
+        {
+            TerminateGame(tag); //if hit head, terminate game
+            Debug.Log("Term - OnTrigger  stonify tail" );
+        }
         int toDestroy = segments.Count - fromIdx;
         for (int i = 0; i < toDestroy; i++)
         {
@@ -397,6 +368,8 @@ public class SnakePlayer : MonoBehaviour
 
     public void TerminateGame(string mssg)
     {
+        Debug.Log("Terminator called!!!!");
+        
         pReady.gameObject.SetActive(false);
         SnakePlayer.player1.playing = false;
         finalMSG.gameObject.SetActive(true);
@@ -416,13 +389,11 @@ public class SnakePlayer : MonoBehaviour
 
     void CanAttack()
     {
-        Debug.Log("Can Attack");
         if (_canAttack)
         {
             //play shot sound:
             audioSource.PlayOneShot(shotSound);
             
-            Debug.Log("Attacking");
             _canAttack = false;
             attackTimer = 0f;
             if (saveDir.y > 0) shot.transform.eulerAngles = new Vector3(0,0,90); //todo: make vectors not new
@@ -480,7 +451,6 @@ public class SnakePlayer : MonoBehaviour
 
     IEnumerator RespawnBites()
     {
-        Debug.Log("Called respawn");
         while (!playing) { }
         while (playing)
         {

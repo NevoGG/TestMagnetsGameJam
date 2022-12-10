@@ -24,7 +24,6 @@ public class BallScript : MonoBehaviour
     void Start()
     {
         
-        Vector3 dir;
         if (CompareTag(SHOT1_TAG)) direction = SnakePlayer.player1.saveDir;
         else if (CompareTag(SHOT2_TAG)) direction = SnakePlayer.player2.saveDir;
         Invoke("DeactivateGameObject", deactivateTimer);
