@@ -85,32 +85,50 @@ public class SnakePlayer : MonoBehaviour
     void Start()
     {
         audioSource = this.GetComponent<AudioSource>();
-        
-        if (CompareTag(PLAYER1_TAG)) player1 = this;
-        if (CompareTag(PLAYER2_TAG)) player2 = this;
 
-        
+        if (CompareTag(PLAYER1_TAG))
+        {
+            player1 = this;
+        }
+        if (CompareTag(PLAYER2_TAG))
+        {
+            player2 = this;
+
+        }
+
+
         segments = new List<GameObject>();
         segments.Add(this.GameObject());
+
+        startState();
+
+
+    }
+
+    public void startState()
+    {
+        if (CompareTag(PLAYER1_TAG))
+        {
+            transform.position = new Vector3(-200, 0, 0);
+        }
+        if (CompareTag(PLAYER2_TAG))
+        {
+            transform.position = new Vector3(200, 0, 0);
+        }
         target = transform.position;
         saveDir = Vector3.zero;
 
-        // added for general code
-        playing = false;
-
-        // <=====
-
+        // amplify game music
+        AudioSource music = gameMusic.GetComponent<AudioSource>();
+        music.volume = 1;
+        numPoints = 0;
     }
     
     // Update is called once per frame
     void Update()
     {
-        if (!playing) StartWhenReady(); // <=====
-        else
-        {
-            Move();
-            Attack();
-        }
+        Move();
+        Attack();
         
         //check if snake is electrocuted and if it can move
         if (isElectrocuted)
@@ -237,17 +255,17 @@ public class SnakePlayer : MonoBehaviour
         Vector3 dir = Vector3.zero;
         if (CompareTag(PLAYER1_TAG))
         {
-            if (Input.GetKey(KeyCode.UpArrow) && saveDir != Vector3.down) dir = Vector3.up;
-            else if (Input.GetKey(KeyCode.DownArrow) && saveDir != Vector3.up) dir = Vector3.down;
-            else if (Input.GetKey(KeyCode.RightArrow) && saveDir != Vector3.left) dir = Vector3.right;
-            else if (Input.GetKey(KeyCode.LeftArrow) && saveDir != Vector3.right) dir = Vector3.left;
-        }
-        else if (CompareTag(PLAYER2_TAG))
-        {
             if (Input.GetKey(KeyCode.W) && saveDir != Vector3.down) dir = Vector3.up;
             else if (Input.GetKey(KeyCode.S) && saveDir != Vector3.up) dir = Vector3.down;
             else if (Input.GetKey(KeyCode.D) && saveDir != Vector3.left) dir = Vector3.right;
             else if (Input.GetKey(KeyCode.A) && saveDir != Vector3.right) dir = Vector3.left;
+        }
+        else if (CompareTag(PLAYER2_TAG))
+        {
+            if (Input.GetKey(KeyCode.UpArrow) && saveDir != Vector3.down) dir = Vector3.up;
+            else if (Input.GetKey(KeyCode.DownArrow) && saveDir != Vector3.up) dir = Vector3.down;
+            else if (Input.GetKey(KeyCode.RightArrow) && saveDir != Vector3.left) dir = Vector3.right;
+            else if (Input.GetKey(KeyCode.LeftArrow) && saveDir != Vector3.right) dir = Vector3.left;
         }
 
         return dir;
@@ -299,7 +317,7 @@ public class SnakePlayer : MonoBehaviour
         {
             numPoints += 1;
             pscoreBoard.text = "Score: " + numPoints.ToString();
-            Destroy(col.gameObject);
+            col.gameObject.SetActive(false);
             Grow();
             return;
         }
@@ -327,8 +345,9 @@ public class SnakePlayer : MonoBehaviour
     {
         if (CompareTag(tag))
         {
-            TerminateGame(tag); //if hit head, terminate game
-            Debug.Log("Term - OnTrigger  stonify tail" );
+            Debug.Log("Term - OnTrigger  stonify tail");
+            ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
+            //TerminateGame(tag); //if hit head, terminate game
         }
         int toDestroy = segments.Count - fromIdx;
         for (int i = 0; i < toDestroy; i++)
@@ -383,8 +402,8 @@ public class SnakePlayer : MonoBehaviour
     {
         attackTimer += Time.deltaTime;
         if (attackTimer > _currentAttackTimer) _canAttack = true;
-        if (Input.GetKeyDown(KeyCode.RightShift) && CompareTag(PLAYER1_TAG)  && segments.Count>1) CanAttack();
-        else if (Input.GetKeyDown(KeyCode.LeftShift) && CompareTag(PLAYER2_TAG) && segments.Count > 1) CanAttack();
+        if (Input.GetKeyDown(KeyCode.LeftShift) && CompareTag(PLAYER1_TAG)  && segments.Count>1) CanAttack();
+        else if (Input.GetKeyDown(KeyCode.RightShift) && CompareTag(PLAYER2_TAG) && segments.Count > 1) CanAttack();
     }
 
     void CanAttack()
