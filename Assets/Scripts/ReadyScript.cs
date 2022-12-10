@@ -38,20 +38,20 @@ public class ReadyScript : MonoBehaviour
     private bool p2Ready;
     private bool playing;
     private bool showingWinner;
-    private bool justFinished;
+    private bool firstTimePlaying;
     private GameObject curScreen = null;
 
     // Start is called before the first frame update
     void Start()
     {
         gameRunner = this;
-
+        
         rNoneScreen.GetComponent<SpriteRenderer>().enabled = true;
         p1Ready = false;
         p2Ready = false;
         playing = false;
         showingWinner = false;
-        justFinished = true;
+        firstTimePlaying = true;
         bites = new List<GameObject>();
     }
 
@@ -120,9 +120,12 @@ public class ReadyScript : MonoBehaviour
         playing = true;
         rBothScreen.GetComponent<SpriteRenderer>().enabled = false;
         player1.SetActive(true);
-        player1.GetComponent<SnakePlayer>().startState();
         player2.SetActive(true);
-        player2.GetComponent<SnakePlayer>().startState();
+        if (!firstTimePlaying)
+        {
+            player1.GetComponent<SnakePlayer>().startState();
+            player2.GetComponent<SnakePlayer>().startState();
+        } else { firstTimePlaying = false; }
 
         StartCoroutine(RespawnBites());
     }

@@ -96,7 +96,6 @@ public class SnakePlayer : MonoBehaviour
 
         }
 
-
         segments = new List<GameObject>();
         segments.Add(this.GameObject());
 
@@ -122,6 +121,10 @@ public class SnakePlayer : MonoBehaviour
         AudioSource music = gameMusic.GetComponent<AudioSource>();
         music.volume = 1;
         numPoints = 0;
+
+        if (segments.Count > 1) { 
+            DestroyTail(1, tag);
+        }
     }
     
     // Update is called once per frame
