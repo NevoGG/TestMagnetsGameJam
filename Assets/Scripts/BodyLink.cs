@@ -1,31 +1,44 @@
 using System;
 using DefaultNamespace;
+using UnityEditor;
 using UnityEngine;
 
-enum Direction
+public enum Direction
 {
     Up, Down, Left, Right, None
 }
     
 public class BodyLink : MonoBehaviour, Linkable
-    {
+{
+
+    private static string LEFT = "BlueLeft";
+    private static string RIGHT = "BlueRight";
+    private static string UP = "BlueDown";
+    private static string DOWN = "BlueDown";
+    private static string DEAD = "BlueElec";
+    private static string ELEC = "BlueElec";
+    private static String PLAYER1_TAG = "Player1";
+    private static String PLAYER2_TAG = "Player2";
+    private static String PLAYER1BODY_TAG = "Player1Body";
+    private static String PLAYER2BODY_TAG = "Player2Body";
+    private const string SHOT1_TAG = "Shot1";
+    private const string SHOT2_TAG = "Shot2";
+    private static string BITE_TAG = "Bite";
         
-        private static String PLAYER1_TAG = "PlayerBody1";
-        private static String PLAYER2_TAG = "PlayerBody2";
-        private static string BITE_TAG = "Bite";
-        
-        //animations:
-        [SerializeField] private AnimationClip upAnimation;
-        [SerializeField] private AnimationClip downAnimation;
-        [SerializeField] private AnimationClip rightAnimation;
-        [SerializeField] private AnimationClip leftAnimation;
+
 
         private SnakePlayer snakeParent;
         private int linkNum;
 
         private Vector3 prevLocation;
         private Vector3 curLocation;
-        private Direction curDirection;
+        private Vector3 curDirection;
+
+        private bool isDestroyed = false;
+    
+        
+        private Rigidbody2D _rigidbody2D;
+        private Animator _animator;
 
         private void SnakeDirectionSwitch(Direction newDir)
         {
@@ -35,34 +48,76 @@ public class BodyLink : MonoBehaviour, Linkable
         private void Start()
         {
             Debug.Log("Started");
-            //StartCoroutine(RespawnBite());   
+            _rigidbody2D = GetComponent<Rigidbody2D>();
+            _animator    = GetComponent<Animator>();
         }
         
         private void Update()
         {
-        
         }
         
         public void OnTriggerEnter2D(Collider2D col)
         {
-            if (CompareTag(PLAYER1_TAG) && col.CompareTag("Shot2")) wasShot();
-            else if (CompareTag(PLAYER2_TAG) && col.CompareTag("Shot1")) wasShot();
+            if (isDestroyed) return; //object is a wall if destroyed
+            //shot other player:
+            if (col.CompareTag(SHOT2_TAG) && CompareTag((PLAYER1BODY_TAG))) WasShot();
+            if (col.CompareTag(SHOT1_TAG) && CompareTag((PLAYER2BODY_TAG))) WasShot();
+            //shot oneself:
+            if (col.CompareTag(SHOT2_TAG) && CompareTag((PLAYER2BODY_TAG)) && linkNum > 1) WasShot();
+            if (col.CompareTag(SHOT1_TAG) && CompareTag((PLAYER1BODY_TAG)) && linkNum > 1) WasShot();
         }
-
-        private void wasShot()
-        {
-            snakeParent.DestroyTail(linkNum);
-        }
+        
 
         public void setSnakeParent(SnakePlayer p)
         {
             snakeParent = p;
+            if (p.CompareTag(PLAYER1_TAG)) tag = PLAYER1BODY_TAG;
+            else tag = PLAYER2BODY_TAG;
         }
         
-        public void setLinkNum(int num)
+        public void setLinkNum(int num) { linkNum = num; }
+
+        public int getLinkNum() { return linkNum;}
+
+        public void SetDirection(Vector3 dir) { MoveAnimUpdate(0); } //todo: filler - do I need dir?
+
+        private void WasShot()
         {
-            linkNum = num;
+            if(!isDestroyed) snakeParent.DestroyTail(linkNum, tag);
+        }
+        
+        private void MoveAnimUpdate(Direction dir= 0)
+        {
+            switch (dir)
+            {
+                case Direction.Down: //todo: set animation to down
+                case Direction.Up: //todo: set animation to up
+                case Direction.Left: //todo: set animation to left
+                case Direction.Right: //todo: set animation to right
+                default: break;
+            }
+
+        }
+
+        public void SetDestroyedAnim()
+        {
+            isDestroyed = true;
+            //todo: set animation to destroyed
+        }
+        
+        public void SetElectrocutedAnim()
+        {
+            //todo: set animation to electrocuted
+        }
+
+        public void BackToNormAnim()
+        {
+            //todo: set animation to regular, determined by MoveAnimUpdate
         }
     }
+
+//todo: create sprites and animators for electrocuted, destroyed and four movement sides
+//todo: set electrocution sound
+//todo: fix animation- crashing unity
 
 

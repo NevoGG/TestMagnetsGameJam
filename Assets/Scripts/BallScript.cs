@@ -8,26 +8,41 @@ public class BallScript : MonoBehaviour
     public float deactivateTimer = 1f;
     private Vector3 direction;
     
+    //to avoid collision on shot instantiation, gives it a period of time until active
+    private bool isActive;
+    private float countUntilActive =0f;
+    [SerializeField] float timeUntilActive = 0.01f;
+
+    private static string PLAYER1_TAG = "Player1";
+    private static string PLAYER2_TAG = "Player2";
+    private static string PLAYER1BODY_TAG = "Player1Body";
+    private static string PLAYER2BODY_TAG = "Player2Body";
+    private const string SHOT1_TAG = "Shot1";
+    private const string SHOT2_TAG = "Shot2";
 
     // Start is called before the first frame update
     void Start()
     {
-        if (this.tag == "Shot1")
-        {
-            direction = SnakePlayer.player1.saveDir;
-            
-        }
-        else if (this.tag == "Shot2")
-        {
-            direction = SnakePlayer.player2.saveDir;
-        }
-               
+        
+        Vector3 dir;
+        if (CompareTag(SHOT1_TAG)) direction = SnakePlayer.player1.saveDir;
+        else if (CompareTag(SHOT2_TAG)) direction = SnakePlayer.player2.saveDir;
         Invoke("DeactivateGameObject", deactivateTimer);
     }
 
+    
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isActive);
+        if (!isActive)
+        {
+            countUntilActive += Time.deltaTime;
+            if (countUntilActive >= timeUntilActive)
+            {
+                isActive = true;
+            }
+        }
         Move();
     }
 
@@ -46,15 +61,19 @@ public class BallScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (this.tag == "Shot2" && collision.gameObject.CompareTag("Player1"))
+        
+        // if (!isActive) return;
+        if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG))
         {
-            SnakePlayer.player1.TerminateGame("Player2");
+            SnakePlayer.player1.TerminateGame(PLAYER2_TAG);
         }
-        else if (this.tag == "Shot1" && collision.gameObject.CompareTag("Player2"))
+        else if (CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG))
         {
-            SnakePlayer.player1.TerminateGame("Player1");
+            SnakePlayer.player1.TerminateGame(PLAYER1_TAG);
         }
     }
+
+    public bool GetIsShotActive() { return isActive; }
 
 
     void DeactivateGameObject()
