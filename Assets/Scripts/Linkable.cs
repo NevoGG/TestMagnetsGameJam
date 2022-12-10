@@ -13,7 +13,7 @@ namespace DefaultNamespace
         public int  getLinkNum();
         
         public void SetDirection(Vector3 dir);
-        public void SetDestroyedAnim();
+        public void SetDestroyed();
 
 
         public void SetElectrocutedAnim();

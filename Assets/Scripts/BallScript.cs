@@ -61,8 +61,6 @@ public class BallScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        // if (!isActive) return;
         if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG))
         {
             SnakePlayer.player1.TerminateGame(PLAYER2_TAG);
@@ -71,6 +69,11 @@ public class BallScript : MonoBehaviour
         {
             SnakePlayer.player1.TerminateGame(PLAYER1_TAG);
         }
+        //if shot your own head, dont set active to false- to avoid bugs
+        if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG) ||
+            CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG)) return;
+        
+        gameObject.SetActive(false);
     }
 
     public bool GetIsShotActive() { return isActive; }

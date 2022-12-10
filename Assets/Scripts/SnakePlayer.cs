@@ -287,12 +287,30 @@ public class SnakePlayer : MonoBehaviour
 
     public void DestroyTail(int fromIdx, string tag)
     {
+        //changeable if we just want it to disappear
+        StonifyTail(fromIdx, tag);
+        
+        // if (CompareTag(tag)) TerminateGame(tag); //if hit head, terminate game
+        //     int toDestroy = segments.Count - fromIdx;
+        // for (int i = 0; i < toDestroy; i++)
+        // {
+        //     segments[segments.Count - 1].gameObject.SetActive(false);
+        //     Destroy(segments[segments.Count - 1].gameObject);
+        //     segments.RemoveAt(segments.Count - 1);
+        //     numPoints -= 1;
+        //     pscoreBoard.text = "Score: " + numPoints.ToString();
+        // }
+    }
+    
+    public void StonifyTail(int fromIdx, string tag)
+    {
         if (CompareTag(tag)) TerminateGame(tag); //if hit head, terminate game
-            int toDestroy = segments.Count - fromIdx;
+        int toDestroy = segments.Count - fromIdx;
         for (int i = 0; i < toDestroy; i++)
         {
-            segments[segments.Count - 1].gameObject.SetActive(false);
-            Destroy(segments[segments.Count - 1].gameObject);
+            GameObject bodyLink = segments[segments.Count - 1].gameObject;
+            if(!bodyLink.TryGetComponent(out Linkable linkable)) Debug.Log("Linkable failed on stonify");
+            linkable.SetDestroyed();
             segments.RemoveAt(segments.Count - 1);
             numPoints -= 1;
             pscoreBoard.text = "Score: " + numPoints.ToString();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,7 @@ public enum Direction
     
 public class BodyLink : MonoBehaviour, Linkable
 {
-
+    [SerializeField] private List<Sprite> sprites;
     private static string LEFT = "BlueLeft";
     private static string RIGHT = "BlueRight";
     private static string UP = "BlueDown";
@@ -26,7 +27,7 @@ public class BodyLink : MonoBehaviour, Linkable
     private static string BITE_TAG = "Bite";
         
 
-
+    
         private SnakePlayer snakeParent;
         private int linkNum;
 
@@ -39,6 +40,7 @@ public class BodyLink : MonoBehaviour, Linkable
         
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
+        private SpriteRenderer _spriteRenderer;
 
         private void SnakeDirectionSwitch(Direction newDir)
         {
@@ -50,6 +52,7 @@ public class BodyLink : MonoBehaviour, Linkable
             Debug.Log("Started");
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _animator    = GetComponent<Animator>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
         
         private void Update()
@@ -99,10 +102,10 @@ public class BodyLink : MonoBehaviour, Linkable
 
         }
 
-        public void SetDestroyedAnim()
+        public void SetDestroyed()
         {
             isDestroyed = true;
-            //todo: set animation to destroyed
+            _spriteRenderer.sprite = sprites[1];
         }
         
         public void SetElectrocutedAnim()
