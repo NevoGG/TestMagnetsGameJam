@@ -33,7 +33,7 @@ public class BodyLink : MonoBehaviour, Linkable
 
         private Vector3 prevLocation;
         private Vector3 curLocation;
-        private Vector3 curDirection;
+        private Direction curDirection;
 
         private bool isDestroyed = false;
     
@@ -82,24 +82,30 @@ public class BodyLink : MonoBehaviour, Linkable
 
         public int getLinkNum() { return linkNum;}
 
-        public void SetDirection(Vector3 dir) { MoveAnimUpdate(0); } //todo: filler - do I need dir?
+        public void SetDirection(Direction dir)
+        {
+            MoveAnimUpdate(dir);
+            curDirection = dir;
+        } 
 
         private void WasShot()
         {
             if(!isDestroyed) snakeParent.DestroyTail(linkNum, tag);
         }
         
-        private void MoveAnimUpdate(Direction dir= 0)
+        private void MoveAnimUpdate(Direction dir)
         {
+            if (dir == curDirection) return; //if its the same as the one now, no need to change.
             switch (dir)
             {
                 case Direction.Down: //todo: set animation to down
                 case Direction.Up: //todo: set animation to up
                 case Direction.Left: //todo: set animation to left
                 case Direction.Right: //todo: set animation to right
+                case Direction.None:
                 default: break;
             }
-
+            //todo: don't forget break in switch:)
         }
 
         public void SetDestroyed()

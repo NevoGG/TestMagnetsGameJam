@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
 
 public class SnakePlayer : MonoBehaviour
@@ -25,7 +26,7 @@ public class SnakePlayer : MonoBehaviour
     public GameObject snakeBody;
 
     private List<GameObject> segments;
-    private List<KeyValuePair<Vector3, Vector3>> positionHistory = new List<KeyValuePair<Vector3, Vector3>>();
+    private List<KeyValuePair<Vector3, Direction>> positionHistory = new List<KeyValuePair<Vector3, Direction>>();
     
     public GameObject shot;
 
@@ -164,19 +165,27 @@ public class SnakePlayer : MonoBehaviour
         if(!isElectrocuted)
         {
             transform.position += saveDir * (speed * Time.deltaTime); //change head position
-            positionHistory.Insert(0, new KeyValuePair<Vector3, Vector3>(transform.position, saveDir));
+            positionHistory.Insert(0, new KeyValuePair<Vector3, Direction>(transform.position, vecToDir(saveDir)));
             for (int i = 1; i < segments.Count; i++)
             {
                 Vector3 point = positionHistory[Math.Min(i * GAP, positionHistory.Count - 1)].Key;
-                // bodyLink.transform.position = Vector3.Lerp(bodyLink.transform.position, point);
+                Direction linkDirection = positionHistory[Math.Min(i * GAP, positionHistory.Count - 1)].Value;
                 segments[i].transform.position = point;
                 if(!segments[i].TryGetComponent(out Linkable linkable)) Debug.Log("linkable failed in move");;
-                // linkable.SetDirection(saveDir); //set animation- not working at the moment
+                linkable.SetDirection(linkDirection);
                 index++;
             }
         }
-        //change tails position
         curDir = dir;
+    }
+
+    public Direction vecToDir(Vector3 vec)
+    {
+        if (vec == Vector3.up) return Direction.Up;
+        if (vec == Vector3.down) return Direction.Down;
+        if (vec == Vector3.left) return Direction.Left;
+        if (vec == Vector3.right) return Direction.Right;
+        return Direction.None;
     }
     
 
@@ -245,21 +254,15 @@ public class SnakePlayer : MonoBehaviour
     {
         if (col.gameObject.CompareTag(BITE_TAG))
         {
-            // added for general code
             numPoints += 1;
             pscoreBoard.text = "Score: " + numPoints.ToString();
             Destroy(col.gameObject);
-            // <=====
             Grow();
             return;
         }
 
-        if (col.CompareTag(SHOT2_TAG) || col.CompareTag(SHOT1_TAG))
-        {
-            Debug.Log("Shot Tag"); // todo: delete later
-            return;
-        }
-        
+        if (col.CompareTag(SHOT2_TAG) || col.CompareTag(SHOT1_TAG)) return; //shot collision handled in ballscript
+
         bool toTerminate = false;
         if (CompareTag(PLAYER1_TAG))
         {
