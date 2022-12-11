@@ -20,5 +20,6 @@ namespace DefaultNamespace
         
         public void BackToNormAnim();
 
+        public void WasShot();
     }
 }

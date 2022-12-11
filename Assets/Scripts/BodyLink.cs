@@ -58,18 +58,7 @@ public class BodyLink : MonoBehaviour, Linkable
         private void Update()
         {
         }
-        
-        public void OnTriggerEnter2D(Collider2D col)
-        {
-            if (isDestroyed) return; //object is a wall if destroyed
-            //shot other player:
-            if (col.CompareTag(SHOT2_TAG) && CompareTag((PLAYER1BODY_TAG))) WasShot();
-            if (col.CompareTag(SHOT1_TAG) && CompareTag((PLAYER2BODY_TAG))) WasShot();
-            //shot oneself:
-            if (col.CompareTag(SHOT2_TAG) && CompareTag((PLAYER2BODY_TAG)) && linkNum > 1) WasShot();
-            if (col.CompareTag(SHOT1_TAG) && CompareTag((PLAYER1BODY_TAG)) && linkNum > 1) WasShot();
-        }
-        
+
 
         public void setSnakeParent(SnakePlayer p)
         {
@@ -88,7 +77,7 @@ public class BodyLink : MonoBehaviour, Linkable
             curDirection = dir;
         } 
 
-        private void WasShot()
+        public void WasShot()
         {
             if(!isDestroyed) snakeParent.DestroyTail(linkNum, tag);
         }

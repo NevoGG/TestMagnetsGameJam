@@ -802,7 +802,7 @@ GameObject:
   - component: {fileID: 742443150}
   m_Layer: 0
   m_Name: Snake2
-  m_TagString: Untagged
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2166,7 +2166,7 @@ GameObject:
   - component: {fileID: 1499671736}
   m_Layer: 0
   m_Name: Snake1
-  m_TagString: Untagged
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4127,6 +4127,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1150963682969344420, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7567976676351934151, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
       propertyPath: m_Name
       value: Player1Shot
@@ -4215,6 +4219,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 742443150}
     m_Modifications:
+    - target: {fileID: 1927560458804655620, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4307055142450522837, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4267,6 +4275,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8388985888501994302, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
+      propertyPath: m_TagString
+      value: Player2Body
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
 --- !u!1 &1927560458804655616 stripped
@@ -4293,6 +4305,10 @@ PrefabInstance:
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
+      propertyPath: m_TagString
+      value: Player1Body
       objectReference: {fileID: 0}
     - target: {fileID: 3050636117525674526, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_RootOrder
@@ -4336,6 +4352,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050636117525674526, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3267046920117219795, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
+      propertyPath: m_GravityScale
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -4469,6 +4489,10 @@ PrefabInstance:
     - target: {fileID: 5170147391554032084, guid: bb1ee1004ac267442b74a75429f8038a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7517127284548750628, guid: bb1ee1004ac267442b74a75429f8038a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb1ee1004ac267442b74a75429f8038a, type: 3}

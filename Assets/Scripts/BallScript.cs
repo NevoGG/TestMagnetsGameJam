@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
-
 public class BallScript : MonoBehaviour
 {
     public float speed = 15f;
@@ -60,6 +60,9 @@ public class BallScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        bool shouldDisappear = true;
+        if ((CompareTag(SHOT2_TAG) && collision.CompareTag(SHOT2_TAG)) ||
+            (CompareTag(SHOT1_TAG) && collision.CompareTag(SHOT1_TAG))) shouldDisappear = false;
         if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG))
         {
             Debug.Log("Shot terminating game");
@@ -71,10 +74,23 @@ public class BallScript : MonoBehaviour
             ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 1);
         }
         //if shot your own head, dont set active to false- to avoid bugs
-        if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG) ||
-            CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG)) return;
+        if ((CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG)) ||
+            (CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG)))
+        {
+            Debug.Log("Shot own Head");
+            shouldDisappear = false;
+        }
+        else if ((collision.CompareTag(SHOT2_TAG) && CompareTag(PLAYER2BODY_TAG))
+            || (collision.CompareTag(SHOT1_TAG) && CompareTag(PLAYER1BODY_TAG)))
+        {
+            // collision.gameObject.TryGetComponent(out Linkable linkable);
+            // if (linkable.getLinkNum() > 3) linkable.WasShot();
+            // else shouldDisappear = false;
+            shouldDisappear = false;
+        }
         
-        gameObject.SetActive(false);
+        
+        if(shouldDisappear) gameObject.SetActive(false);
     }
 
     public bool GetIsShotActive() { return isActive; }

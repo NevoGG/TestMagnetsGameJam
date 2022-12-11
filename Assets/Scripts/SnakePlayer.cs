@@ -181,10 +181,6 @@ public class SnakePlayer : MonoBehaviour
             saveDir = dir;
         }
 
-        // ADDED for boarders
-        //dir = checkBoundries(dir);
-
-        //for (int i = segments.Count - 1; i > 0; i--)
         int index = 0;
         if (!IsInBoundaries()) ElectrocuteSnake();
         if(!isElectrocuted)
@@ -203,45 +199,7 @@ public class SnakePlayer : MonoBehaviour
         }
         curDir = dir;
     }
-
-    // ADDED for boarders
-    //   private Vector3 checkBoundries(Vector3 dir)
-    //   {
-    //       if (transform.position.x >= maxX || transform.position.x <= minX)
-    //       {
-    //           if ((saveDir == Vector3.right && transform.position.x >= maxX) || (saveDir == Vector3.left && transform.position.x <= minX))
-    //         {
-    //           if (UnityEngine.Random.value < 0.5f) { dir = new Vector3(0, 1, 0); }
-    //               else { dir = new Vector3(0, -1, 0); }
-    //               if (transform.position.x >= maxX)
-    //               {
-    //                   transform.position = new Vector3(maxX, transform.position.y, transform.position.z);
-    //               }
-    //                else
-    //                {
-    //                   transform.position = new Vector3(minX, transform.position.y, transform.position.z);
-    //               }
-    //           }
-    //       }
-    //
-    //      if (transform.position.y >= maxY || transform.position.y <= minY)
-    //       {
-    //           if ((saveDir == Vector3.up && transform.position.y >= maxY) || (saveDir == Vector3.down && transform.position.y <= minY))
-    //           {
-    //               if (UnityEngine.Random.value < 0.5f) { dir = Vector3.right; }
-    //               else { dir = Vector3.left; }
-    //
-    //                if (transform.position.y >= maxY)
-    //                {
-    //                    transform.position = new Vector3(transform.position.x, maxY, transform.position.z);
-    //               }
-    //               else
-    //               {
-    //                   transform.position = new Vector3(transform.position.x, minY, transform.position.z);
-    //               }
-    //           }
-    //       }
-    //       return dir;
+    
     
     public Direction vecToDir(Vector3 vec)
     {
@@ -324,7 +282,33 @@ public class SnakePlayer : MonoBehaviour
             Grow();
             return;
         }
-        
+        if (col.CompareTag(SHOT2_TAG) || col.CompareTag(SHOT1_TAG))
+        {
+            Debug.Log("Shot Tag"); // todo: delete later
+            return;
+        }
+
+        bool toTerminate = false;
+        if (CompareTag(PLAYER1_TAG))
+        {
+            if (col.CompareTag(PLAYER1BODY_TAG))
+            {
+                col.TryGetComponent(out Linkable link);
+                if (link.getLinkNum() > 1) toTerminate = true;
+            }
+            else toTerminate = true;
+        }
+
+        if (CompareTag(PLAYER2_TAG))
+        {
+            if (col.CompareTag(PLAYER2BODY_TAG))
+            {
+                col.TryGetComponent(out Linkable link);
+                if (link.getLinkNum() > 1) toTerminate = true;
+            }
+            else toTerminate = true;
+        }
+        if (toTerminate) ReadyScript.gameRunner.TerminateGame(gameObject, 0); //for yair:added, not the right winner
     }
 
     public void DestroyTail(int fromIdx, string tag)
@@ -349,7 +333,7 @@ public class SnakePlayer : MonoBehaviour
         if (CompareTag(tag))
         {
             Debug.Log("Term - OnTrigger  stonify tail");
-            ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
+            ReadyScript.gameRunner.TerminateGame(this.gameObject, 1); //todo: isok?
             //TerminateGame(tag); //if hit head, terminate game
         }
         int toDestroy = segments.Count - fromIdx;
@@ -425,11 +409,11 @@ public class SnakePlayer : MonoBehaviour
             GameObject shotObj = null;
             if (CompareTag(PLAYER1_TAG)) {
                 shotObj =  Instantiate(Resources.Load("Player1Shot"),
-                    spawnPoint.position + saveDir * SHOT_DIST_FROM_HEAD, shot.transform.rotation) as GameObject;
+                    transform.position + saveDir * SHOT_DIST_FROM_HEAD, shot.transform.rotation) as GameObject;
             }
             else {
                 shotObj = Instantiate(Resources.Load("Player2Shot"),
-                    spawnPoint.position+ saveDir * SHOT_DIST_FROM_HEAD, shot.transform.rotation) as GameObject; 
+                    transform.position + saveDir * SHOT_DIST_FROM_HEAD, shot.transform.rotation) as GameObject; 
             }
             Debug.Log("removing last");
             segments[segments.Count - 1].gameObject.SetActive(false);
