@@ -65,12 +65,12 @@ public class BallScript : MonoBehaviour
             (CompareTag(SHOT1_TAG) && collision.CompareTag(SHOT1_TAG))) shouldDisappear = false;
         if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG))
         {
-            Debug.Log("Shot terminating game");
+            Debug.Log("Shot head terminating game");
             ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 1);
         }
         else if (CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG))
         {
-            Debug.Log("Shot terminating game");
+            Debug.Log("Shot head terminating game");
             ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 1);
         }
         //if shot your own head, dont set active to false- to avoid bugs

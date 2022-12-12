@@ -167,6 +167,8 @@ public class ReadyScript : MonoBehaviour
     {
         Debug.Log("Terminator called!!!!");
         playing = false;
+        player1.GetComponent<SnakePlayer>().DestroyLeftovers();
+        player2.GetComponent<SnakePlayer>().DestroyLeftovers();
         player1.SetActive(false);
         player2.SetActive(false);
         p1Ready = false;
@@ -183,7 +185,12 @@ public class ReadyScript : MonoBehaviour
     public void ShowWinner(GameObject winner, int winType)
     {
         Debug.Log("Showing winner!");
-        if(winner == player1)
+        if(winner == null)
+        {
+            doneTieScreen.GetComponent<SpriteRenderer>().enabled = true;
+            curScreen = doneTieScreen;
+        }
+        else if(winner == player1)
         {
             if(winType == 0){winP1CrashScreen.GetComponent<SpriteRenderer>().enabled = true; curScreen = winP1CrashScreen; }
             else{winP1hitScreen.GetComponent<SpriteRenderer>().enabled = true; curScreen = winP1hitScreen; }

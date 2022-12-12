@@ -26,6 +26,7 @@ public class SnakePlayer : MonoBehaviour
     public GameObject snakeBody;
 
     private List<GameObject> segments;
+    private List<GameObject> all_segments_stored;
     private List<KeyValuePair<Vector3, Direction>> positionHistory = new List<KeyValuePair<Vector3, Direction>>();
     
     public GameObject shot;
@@ -90,6 +91,7 @@ public class SnakePlayer : MonoBehaviour
 
         segments = new List<GameObject>();
         segments.Add(this.GameObject());
+        all_segments_stored = new List<GameObject>();
 
         startState();
 
@@ -112,10 +114,6 @@ public class SnakePlayer : MonoBehaviour
         // amplify game music
         AudioSource music = gameMusic.GetComponent<AudioSource>();
         music.volume = 1;
-
-        if (segments.Count > 1) { 
-            DestroyTail(1, tag);
-        }
     }
     
     // Update is called once per frame
@@ -248,33 +246,30 @@ public class SnakePlayer : MonoBehaviour
             Grow();
             return;
         }
-        if (col.CompareTag(SHOT2_TAG) || col.CompareTag(SHOT1_TAG))
-        {
-            Debug.Log("Shot Tag"); // todo: delete later
-            return;
-        }
 
-        bool toTerminate = false;
-        if (CompareTag(PLAYER1_TAG))
+        if ((CompareTag(PLAYER1_TAG) && col.CompareTag(PLAYER2_TAG)) || (CompareTag(PLAYER2_TAG) && col.CompareTag(PLAYER1_TAG)))
+        {
+            ReadyScript.gameRunner.TerminateGame(null, 0);
+        }
+        else if (CompareTag(PLAYER1_TAG))
         {
             if (col.CompareTag(PLAYER1BODY_TAG))
             {
                 col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 7) toTerminate = true;
+                if (link.getLinkNum() > 7) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
             }
-            else toTerminate = true;
+            else ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0); ;
         }
-
-        if (CompareTag(PLAYER2_TAG))
+        else if (CompareTag(PLAYER2_TAG))
         {
             if (col.CompareTag(PLAYER2BODY_TAG))
             {
                 col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 7) toTerminate = true;
+                if (link.getLinkNum() > 7) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
             }
-            else toTerminate = true;
+            else ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0); ;
         }
-        if (toTerminate) ReadyScript.gameRunner.TerminateGame(gameObject, 0); //for yair:added, not the right winner
+        //if (toTerminate) ReadyScript.gameRunner.TerminateGame(gameObject, 0); //for yair:added, not the right winner
     }
 
     public void DestroyTail(int fromIdx, string tag)
@@ -299,7 +294,7 @@ public class SnakePlayer : MonoBehaviour
         if (CompareTag(tag))
         {
             Debug.Log("Term - OnTrigger  stonify tail");
-            ReadyScript.gameRunner.TerminateGame(this.gameObject, 1); //todo: isok?
+            //ReadyScript.gameRunner.TerminateGame(this.gameObject, 1); //todo: isok?
             //TerminateGame(tag); //if hit head, terminate game
         }
         int toDestroy = segments.Count - fromIdx;
@@ -307,11 +302,12 @@ public class SnakePlayer : MonoBehaviour
         {
             GameObject bodyLink = segments[segments.Count - 1].gameObject;
             if(!bodyLink.TryGetComponent(out Linkable linkable)) Debug.Log("Linkable failed on stonify");
+            all_segments_stored.Add(bodyLink);
             linkable.SetDestroyed();
             segments.RemoveAt(segments.Count - 1);
         }
     }
-    
+
     private void ElectrocuteSnake()
     {
         isElectrocuted = true;
@@ -375,5 +371,25 @@ public class SnakePlayer : MonoBehaviour
 
         }
         
+    }
+
+    public void DestroyLeftovers()
+    {
+        if (segments.Count > 1)
+        {
+            for (int i = segments.Count - 1; i > 0; i++)
+            {
+                Destroy(segments[i]);
+                segments.RemoveAt(i);
+            }
+        }
+        if (all_segments_stored.Count > 0)
+        {
+            for (int i = all_segments_stored.Count - 1; i >= 0; i++)
+            {
+                Destroy(all_segments_stored[i]);
+                all_segments_stored.RemoveAt(i);
+            }
+        }
     }
 }
