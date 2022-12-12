@@ -222,10 +222,10 @@ public class SnakePlayer : MonoBehaviour
         Vector3 dir = Vector3.zero;
         if (CompareTag(PLAYER1_TAG))
         {
-            if (Input.GetKey(KeyCode.W) && saveDir != Vector3.down) dir = Vector3.up;
+            if (Input.GetKey(KeyCode.Z) && saveDir != Vector3.down) dir = Vector3.up;
             else if (Input.GetKey(KeyCode.S) && saveDir != Vector3.up) dir = Vector3.down;
             else if (Input.GetKey(KeyCode.D) && saveDir != Vector3.left) dir = Vector3.right;
-            else if (Input.GetKey(KeyCode.A) && saveDir != Vector3.right) dir = Vector3.left;
+            else if (Input.GetKey(KeyCode.Q) && saveDir != Vector3.right) dir = Vector3.left;
         }
         else if (CompareTag(PLAYER2_TAG))
         {
@@ -300,7 +300,7 @@ public class SnakePlayer : MonoBehaviour
             if (col.CompareTag(PLAYER1BODY_TAG))
             {
                 col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 1) toTerminate = true;
+                if (link.getLinkNum() > 7) toTerminate = true;
             }
             else toTerminate = true;
         }
@@ -310,7 +310,7 @@ public class SnakePlayer : MonoBehaviour
             if (col.CompareTag(PLAYER2BODY_TAG))
             {
                 col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 1) toTerminate = true;
+                if (link.getLinkNum() > 7) toTerminate = true;
             }
             else toTerminate = true;
         }
