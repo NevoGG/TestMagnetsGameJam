@@ -2981,6 +2981,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1150963682969344421, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
+      propertyPath: speed
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 7567976676351934151, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
       propertyPath: m_Name
       value: Player1Shot

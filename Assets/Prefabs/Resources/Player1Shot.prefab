@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1150963682969344419}
   - component: {fileID: 1150963682969344420}
   - component: {fileID: 1150963682969344421}
-  - component: {fileID: 5662927417744413444}
+  - component: {fileID: 1150963682969344422}
   m_Layer: 0
   m_Name: Player1Shot
   m_TagString: Shot1
@@ -137,10 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2328d106c62322498cd200baece80fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 300
+  speed: 200
   deactivateTimer: 1
   timeUntilActive: 0.01
---- !u!95 &5662927417744413444
+--- !u!95 &1150963682969344422
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0

@@ -256,47 +256,35 @@ public class SnakePlayer : MonoBehaviour
             if (col.CompareTag(PLAYER1BODY_TAG))
             {
                 col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 7) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
+                if (link.getLinkNum() > 7)
+                {
+                    ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
+                }
             }
-            else ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0); ;
+            else if (col.CompareTag(PLAYER2BODY_TAG)) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0); ;
         }
         else if (CompareTag(PLAYER2_TAG))
         {
             if (col.CompareTag(PLAYER2BODY_TAG))
             {
                 col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 7) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
+                if (link.getLinkNum() > 7)
+                {
+                    ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
+                }
             }
-            else ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0); ;
+            else if (col.CompareTag(PLAYER1BODY_TAG)) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0); ;
         }
         //if (toTerminate) ReadyScript.gameRunner.TerminateGame(gameObject, 0); //for yair:added, not the right winner
     }
 
     public void DestroyTail(int fromIdx, string tag)
     {
-        //changeable if we just want it to disappear
         StonifyTail(fromIdx, tag);
-        
-        // if (CompareTag(tag)) TerminateGame(tag); //if hit head, terminate game
-        //     int toDestroy = segments.Count - fromIdx;
-        // for (int i = 0; i < toDestroy; i++)
-        // {
-        //     segments[segments.Count - 1].gameObject.SetActive(false);
-        //     Destroy(segments[segments.Count - 1].gameObject);
-        //     segments.RemoveAt(segments.Count - 1);
-        //     numPoints -= 1;
-        //     pscoreBoard.text = "Score: " + numPoints.ToString();
-        // }
     }
     
     public void StonifyTail(int fromIdx, string tag)
     {
-        if (CompareTag(tag))
-        {
-            Debug.Log("Term - OnTrigger  stonify tail");
-            //ReadyScript.gameRunner.TerminateGame(this.gameObject, 1); //todo: isok?
-            //TerminateGame(tag); //if hit head, terminate game
-        }
         int toDestroy = segments.Count - fromIdx;
         for (int i = 0; i < toDestroy; i++)
         {
