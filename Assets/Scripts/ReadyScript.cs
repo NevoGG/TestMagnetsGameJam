@@ -168,7 +168,7 @@ public class ReadyScript : MonoBehaviour
         Debug.Log("Terminator called!!!!");
         playing = false;
         player1.GetComponent<SnakePlayer>().DestroyLeftovers();
-        player2.GetComponent<SnakePlayer>().DestroyLeftovers();
+        player2.GetComponent<SnakePlayer>().DestroyLeftovers(); 
         player1.SetActive(false);
         player2.SetActive(false);
         p1Ready = false;

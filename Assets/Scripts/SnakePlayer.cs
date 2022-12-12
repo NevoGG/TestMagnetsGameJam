@@ -255,8 +255,9 @@ public class SnakePlayer : MonoBehaviour
         {
             if (col.CompareTag(PLAYER1BODY_TAG))
             {
-                col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 7)
+                //col.TryGetComponent(out Linkable link);
+                //if (link.getLinkNum() > 7)
+                if (segments.Count > 4)
                 {
                     ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
                 }
@@ -267,10 +268,11 @@ public class SnakePlayer : MonoBehaviour
         {
             if (col.CompareTag(PLAYER2BODY_TAG))
             {
-                col.TryGetComponent(out Linkable link);
-                if (link.getLinkNum() > 7)
+                //col.TryGetComponent(out Linkable link);
+                //if (link.getLinkNum() > 7)
+                if (segments.Count > 4)
                 {
-                    ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
+                        ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
                 }
             }
             else if (col.CompareTag(PLAYER1BODY_TAG)) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0); ;
@@ -365,7 +367,7 @@ public class SnakePlayer : MonoBehaviour
     {
         if (segments.Count > 1)
         {
-            for (int i = segments.Count - 1; i > 0; i++)
+            for (int i = segments.Count - 1; i > 0; i--)
             {
                 Destroy(segments[i]);
                 segments.RemoveAt(i);
@@ -373,7 +375,7 @@ public class SnakePlayer : MonoBehaviour
         }
         if (all_segments_stored.Count > 0)
         {
-            for (int i = all_segments_stored.Count - 1; i >= 0; i++)
+            for (int i = all_segments_stored.Count - 1; i >= 0; i--)
             {
                 Destroy(all_segments_stored[i]);
                 all_segments_stored.RemoveAt(i);
