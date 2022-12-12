@@ -13,6 +13,7 @@ public class WelcomeScript : MonoBehaviour
     public GameObject t4Screen = null;
     public GameObject t5Screen = null;
     public GameObject t6Screen = null;
+    public GameObject t7Screen = null;
 
     //public GameObject rNoneScreen = null;
     //public GameObject rplayer1Screen = null;
@@ -20,14 +21,14 @@ public class WelcomeScript : MonoBehaviour
     //public GameObject rBothScreen = null;
 
 
-    private bool tstage = true;
-    private int stage = 0;
+    private int stage;
     private bool justChanged = false;
 
     void Start()
     {
         welcomeScreen.GetComponent<SpriteRenderer>().enabled = true;
         welcomeScreen.GetComponent<Animator>().enabled = true;
+        stage = 0;
     }
 
     //SceneManager.LoadScene("LightScene");
@@ -35,19 +36,29 @@ public class WelcomeScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tstage == true)
+        if (stage == 0 && !justChanged && (Input.GetKey(KeyCode.RightShift)|| Input.GetKey(KeyCode.LeftShift)))
         {
-            if (stage >= 0 && stage <= 7)
+            stage += 1;
+            moveStageForward();
+            justChanged = true;
+            StartCoroutine(WaitLittle());
+        }
+        else if (stage >= 1 && stage <= 8)
+        {
+            if (!justChanged && Input.GetKey(KeyCode.RightShift))
             {
-                if (!justChanged && Input.GetKey(KeyCode.Space))
-                {
-                    stage += 1;
-                    updateStage();
-                    justChanged = true;
-                    StartCoroutine(WaitLittle());
-                }
+                stage += 1;
+                moveStageForward();
+                justChanged = true;
+                StartCoroutine(WaitLittle());
             }
-            else { tstage = false; }
+            if (!justChanged && Input.GetKey(KeyCode.LeftShift))
+            {
+                moveStageBackwards();
+                stage -= 1;
+                justChanged = true;
+                StartCoroutine(WaitLittle());
+            }
         }
     }
 
@@ -57,7 +68,7 @@ public class WelcomeScript : MonoBehaviour
         justChanged = false;
     }
 
-    private void updateStage()
+    private void moveStageForward()
     {
 
         if (stage == 1)
@@ -93,15 +104,56 @@ public class WelcomeScript : MonoBehaviour
         }
         else if (stage == 7)
         {
+            t6Screen.GetComponent<SpriteRenderer>().enabled = false;
+            t7Screen.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else if (stage >= 8)
+        {
             StopCoroutine(WaitLittle());
-            tstage = true;
             SceneManager.LoadScene("LightScene");
         }
-
-
     }
 
+    private void moveStageBackwards()
+    {
 
+        if (stage == 1)
+        {
+            welcomeScreen.GetComponent<SpriteRenderer>().enabled = true;
+            welcomeScreen.GetComponent<Animator>().enabled = true;
+            t1Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else if (stage == 2)
+        {
+            t1Screen.GetComponent<SpriteRenderer>().enabled = true;
+            t2Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else if (stage == 3)
+        {
+            t2Screen.GetComponent<SpriteRenderer>().enabled = true;
+            t3Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else if (stage == 4)
+        {
+            t3Screen.GetComponent<SpriteRenderer>().enabled = true;
+            t4Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else if (stage == 5)
+        {
+            t4Screen.GetComponent<SpriteRenderer>().enabled = true;
+            t5Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else if (stage == 6)
+        {
+            t5Screen.GetComponent<SpriteRenderer>().enabled = true;
+            t6Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else if (stage == 7)
+        {
+            t6Screen.GetComponent<SpriteRenderer>().enabled = true;
+            t7Screen.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
 
 
 

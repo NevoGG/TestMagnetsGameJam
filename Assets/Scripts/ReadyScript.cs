@@ -13,6 +13,8 @@ public class ReadyScript : MonoBehaviour
     public GameObject rplayer1Screen = null;
     public GameObject rplayer2Screen = null;
     public GameObject rBothScreen = null;
+    public GameObject Countdown = null;
+
 
     public GameObject doneTieScreen = null;
     public GameObject winP1CrashScreen = null;
@@ -116,9 +118,17 @@ public class ReadyScript : MonoBehaviour
 
     IEnumerator Wait2Start()  // only player 1 can call this
     {
-        yield return new WaitForSeconds(1.5f);
-        playing = true;
+        yield return new WaitForSeconds(0.5f);
         rBothScreen.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<Animator>().enabled = true;
+        Countdown.SetActive(true);
+        
+        yield return new WaitForSeconds(3.9f);
+        Countdown.SetActive(false);
+        gameObject.GetComponent<Animator>().enabled = false;
+
+
+        playing = true;
         player1.SetActive(true);
         player2.SetActive(true);
         if (!firstTimePlaying)

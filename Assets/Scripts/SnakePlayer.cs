@@ -61,16 +61,7 @@ public class SnakePlayer : MonoBehaviour
 
     // added for general code
     public int speed = 200;
-    public TMP_Text pscoreBoard;
-    public TMP_Text pInstructions;
-    public TMP_Text pReady;
-    public TMP_Text goMssg;
-    public TMP_Text finalMSG;
-    public bool ready = false;
     private bool playing = false;
-    public GameObject p2 = null;
-    private int numPoints = 0;
-    private GameObject bite = null;
     private bool calledOnce = true;
     private int bodyDist = 25;
     // <=====
@@ -121,7 +112,6 @@ public class SnakePlayer : MonoBehaviour
         // amplify game music
         AudioSource music = gameMusic.GetComponent<AudioSource>();
         music.volume = 1;
-        numPoints = 0;
 
         if (segments.Count > 1) { 
             DestroyTail(1, tag);
@@ -141,34 +131,6 @@ public class SnakePlayer : MonoBehaviour
             if (curTimeElectrocution > electrocutionTime)
             {
                 UnelectrocuteSnake();
-            }
-        }
-    }
-
-    private void StartWhenReady()
-    {
-        if (CompareTag(PLAYER1_TAG))
-        {
-            if (Input.GetKey(KeyCode.RightShift))
-            {
-                pInstructions.gameObject.SetActive(false);
-                ready = true;
-                pReady.gameObject.SetActive(true);
-            }
-
-            if (ready && p2.GetComponent<SnakePlayer>().ready && calledOnce)
-            {
-                calledOnce = false;
-                StartCoroutine(StartGame());
-            }
-        }
-        else if (CompareTag(PLAYER2_TAG))
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                pInstructions.gameObject.SetActive(false);
-                ready = true;
-                pReady.gameObject.SetActive(true);
             }
         }
     }
@@ -282,8 +244,6 @@ public class SnakePlayer : MonoBehaviour
     {
         if (col.gameObject.CompareTag(BITE_TAG))
         {
-            numPoints += 1;
-            pscoreBoard.text = "Score: " + numPoints.ToString();
             col.gameObject.SetActive(false);
             Grow();
             return;
@@ -349,8 +309,6 @@ public class SnakePlayer : MonoBehaviour
             if(!bodyLink.TryGetComponent(out Linkable linkable)) Debug.Log("Linkable failed on stonify");
             linkable.SetDestroyed();
             segments.RemoveAt(segments.Count - 1);
-            numPoints -= 1;
-            pscoreBoard.text = "Score: " + numPoints.ToString();
         }
     }
     
@@ -377,18 +335,6 @@ public class SnakePlayer : MonoBehaviour
             if(!segments[i].TryGetComponent(out Linkable linkable)) Debug.Log("linkable failed in electrocute");;
             linkable.SetElectrocutedAnim();
         }
-    }
-
-    public void TerminateGame(string mssg)
-    {
-        Debug.Log("Terminator called!!!!");
-        
-        pReady.gameObject.SetActive(false);
-        SnakePlayer.player1.playing = false;
-        finalMSG.gameObject.SetActive(true);
-        SnakePlayer.player1.gameObject.SetActive(false);
-        SnakePlayer.player2.gameObject.SetActive(false);
-        finalMSG.text = "GAME OVER! \n\n" + mssg + " WINS!";
     }
 
 
@@ -426,67 +372,8 @@ public class SnakePlayer : MonoBehaviour
             segments[segments.Count - 1].gameObject.SetActive(false);
             Destroy(segments[segments.Count - 1].gameObject);
             segments.RemoveAt(segments.Count - 1);
-            numPoints -= 1;
-            pscoreBoard.text = "Score: " + numPoints.ToString();
 
         }
         
     }
-
-    // added for general code
-    IEnumerator StartGame()  // only player 1 can call this
-    {
-        // amplify game music
-        AudioSource music = gameMusic.GetComponent<AudioSource>();
-        music.volume = 1;
-
-        yield return new WaitForSeconds(1);
-        pReady.gameObject.SetActive(false);
-        p2.gameObject.GetComponent<SnakePlayer>().pReady.gameObject.SetActive(false);
-        yield return new WaitForSeconds(0.2f);
-        goMssg.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1);
-        goMssg.gameObject.SetActive(false);
-
-        // ADDED for borders
-        transform.position = new Vector3(200, 0, 0);
-        p2.gameObject.transform.position = new Vector3(-200, 0, 0);
-        target = new Vector3(200, 0, 0);
-        p2.gameObject.GetComponent<SnakePlayer>().target = new Vector3(-200, 0, 0);
-        gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        p2.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        // <-----
-
-        playing = true;
-        p2.gameObject.GetComponent<SnakePlayer>().playing = true;
-        StartCoroutine(RespawnBites());
-    }
-
-    IEnumerator RespawnBites()
-    {
-        while (!playing) { }
-        while (playing)
-        {
-            Debug.Log("Creating bite");
-            float xPlacement = UnityEngine.Random.Range(1, maxX);
-            float yPlacement = UnityEngine.Random.Range(1, maxY);
-            if (UnityEngine.Random.value < 0.5f)
-            {
-                xPlacement *= -1;
-            }
-            if (UnityEngine.Random.value < 0.5f)
-            {
-                yPlacement *= -1;
-            }
-            bite = Instantiate(Resources.Load("Bite")) as GameObject;
-            bite.transform.position = (new Vector3(xPlacement, yPlacement, -0.1f));
-            yield return new WaitForSeconds(3);
-        }
-    }
 }
-
-//todo: bugs:
-//todo: terminate game fails
-//todo: food instantiates out of screen
-// todo: background not showing
-//todo: make tie an option (mssg containing tie tag)- tie art?
