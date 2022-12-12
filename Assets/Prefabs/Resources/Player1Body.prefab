@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: -1980987389359875164}
   - component: {fileID: 3267046920117219795}
   - component: {fileID: 3267046920117219794}
-  - component: {fileID: 3267046920117219796}
   - component: {fileID: 4839702022656951125}
+  - component: {fileID: 4046481726928363570}
   m_Layer: 0
   m_Name: Player1Body
   m_TagString: Player1Body
@@ -131,6 +131,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 9d346f45e04def94a8b321ea7b57c7c6, type: 3}
   - {fileID: 21300000, guid: a63dbf3505dd5034e8cda523ffc5d019, type: 3}
+  animator: {fileID: 4046481726928363570}
 --- !u!50 &3267046920117219795
 Rigidbody2D:
   serializedVersion: 4
@@ -178,19 +179,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.81, y: 2.63}
   m_EdgeRadius: 0
---- !u!114 &3267046920117219796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407203144640241514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a642b0ab3246dba484bee2de11764a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites: []
 --- !u!58 &4839702022656951125
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -207,3 +195,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.4049999
+--- !u!95 &4046481726928363570
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407203144640241514}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2b629e8a50a5441f4bf58224dce700ff, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

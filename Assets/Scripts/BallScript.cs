@@ -74,20 +74,25 @@ public class BallScript : MonoBehaviour
             ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 1);
         }
         //if shot your own head, dont set active to false- to avoid bugs
-        if ((CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG)) ||
-            (CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG)))
+        if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER2_TAG)) ||
+            (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1_TAG)))
         {
             Debug.Log("Shot own Head");
             shouldDisappear = false;
         }
-        else if ((collision.CompareTag(SHOT2_TAG) && CompareTag(PLAYER2BODY_TAG))
-            || (collision.CompareTag(SHOT1_TAG) && CompareTag(PLAYER1BODY_TAG)))
+        else if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER2BODY_TAG))
+            || (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1BODY_TAG)))
         {
             // collision.gameObject.TryGetComponent(out Linkable linkable);
             // if (linkable.getLinkNum() > 3) linkable.WasShot();
             // else shouldDisappear = false;
             shouldDisappear = false;
         }
+        Debug.Log(this.tag);
+        Debug.Log(collision.tag);
+
+        
+        Debug.Log(shouldDisappear);
         
         
         if(shouldDisappear) gameObject.SetActive(false);

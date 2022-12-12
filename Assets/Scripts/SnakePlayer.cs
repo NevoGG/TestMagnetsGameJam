@@ -36,6 +36,7 @@ public class SnakePlayer : MonoBehaviour
     
     public static SnakePlayer player1;
     public static SnakePlayer player2;
+    public Animator animator;
 
     //saves current pressed key, to avoid redundant actions
     private Vector3 curDir;
@@ -175,12 +176,17 @@ public class SnakePlayer : MonoBehaviour
     void Move()
     {
         var dir = DetermineSnakeDirection();
+        if (dir == Vector3.up) animator.SetBool("Up",true);
+        else if (dir == Vector3.down) animator.SetBool("Down",true);
+        else if (dir == Vector3.left) animator.SetBool("Left",true);
+        else if (dir == Vector3.right) animator.SetBool("Right",true);
         if (dir != Vector3.zero && curDir != Vector3.zero)
         {
             audioSource.PlayOneShot(changeDirectionSound);
             saveDir = dir;
         }
 
+        
         int index = 0;
         if (!IsInBoundaries()) ElectrocuteSnake();
         if(!isElectrocuted)
@@ -351,6 +357,7 @@ public class SnakePlayer : MonoBehaviour
     private void ElectrocuteSnake()
     {
         isElectrocuted = true;
+        animator.SetBool("Electrocuted",true);
         curTimeElectrocution = 0f;
         // todo: start electrocution sound
         for (int i = 1; i < segments.Count; i++)

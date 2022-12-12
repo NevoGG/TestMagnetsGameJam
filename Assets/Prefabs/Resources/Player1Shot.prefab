@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1150963682969344419}
   - component: {fileID: 1150963682969344420}
   - component: {fileID: 1150963682969344421}
+  - component: {fileID: 5662927417744413444}
   m_Layer: 0
   m_Name: Player1Shot
   m_TagString: Shot1
@@ -139,3 +140,23 @@ MonoBehaviour:
   speed: 300
   deactivateTimer: 1
   timeUntilActive: 0.01
+--- !u!95 &5662927417744413444
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567976676351934151}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b07f718b4aa9b448aa8c6300b4d85e11, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

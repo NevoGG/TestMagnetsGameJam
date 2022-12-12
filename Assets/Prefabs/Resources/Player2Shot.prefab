@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7517127284548750629}
   - component: {fileID: 7517127284548750628}
   - component: {fileID: 7517127284548750630}
+  - component: {fileID: 4982518847342687870}
   m_Layer: 0
   m_Name: Player2Shot
   m_TagString: Shot2
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6dfdb482bef8dda49a5c3c647a3fc891, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -139,3 +140,23 @@ MonoBehaviour:
   speed: 300
   deactivateTimer: 2
   timeUntilActive: 0.01
+--- !u!95 &4982518847342687870
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5170147391554032084}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6fd00d54c0875422f8eafa8bebb0314e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

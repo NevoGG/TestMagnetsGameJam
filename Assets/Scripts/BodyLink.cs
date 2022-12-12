@@ -25,6 +25,7 @@ public class BodyLink : MonoBehaviour, Linkable
     private const string SHOT1_TAG = "Shot1";
     private const string SHOT2_TAG = "Shot2";
     private static string BITE_TAG = "Bite";
+    public Animator animator;
         
 
     
@@ -87,14 +88,25 @@ public class BodyLink : MonoBehaviour, Linkable
             if (dir == curDirection) return; //if its the same as the one now, no need to change.
             switch (dir)
             {
-                case Direction.Down: //todo: set animation to down
-                case Direction.Up: //todo: set animation to up
-                case Direction.Left: //todo: set animation to left
-                case Direction.Right: //todo: set animation to right
+                case Direction.Down:
+                    animator.SetBool("Down",true);
+                    break;
+                case Direction.Up:
+                    animator.SetBool("Up",true);
+                    break;
+                case Direction.Left:
+                    animator.SetBool("Left",true);
+                    break;
+                case Direction.Right:
+                    animator.SetBool("Right",true);
+                    break;
                 case Direction.None:
-                default: break;
+                    animator.SetBool("Left",false);
+                    animator.SetBool("Right",false);
+                    animator.SetBool("Up",false);
+                    animator.SetBool("Down",false);
+                    break;
             }
-            //todo: don't forget break in switch:)
         }
 
         public void SetDestroyed()
@@ -105,6 +117,7 @@ public class BodyLink : MonoBehaviour, Linkable
         
         public void SetElectrocutedAnim()
         {
+            animator.SetBool("Electrocuted",true);
             //todo: set animation to electrocuted
         }
 
