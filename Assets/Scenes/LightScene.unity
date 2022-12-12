@@ -3150,11 +3150,11 @@ PrefabInstance:
       objectReference: {fileID: 3267046920117219799}
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_Name
-      value: Player2Body2
+      value: Player1Body
       objectReference: {fileID: 0}
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_TagString
