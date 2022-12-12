@@ -83,10 +83,9 @@ public class BallScript : MonoBehaviour
         else if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER2BODY_TAG))
             || (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1BODY_TAG)))
         {
-            // collision.gameObject.TryGetComponent(out Linkable linkable);
-            // if (linkable.getLinkNum() > 3) linkable.WasShot();
-            // else shouldDisappear = false;
-            shouldDisappear = false;
+            collision.gameObject.TryGetComponent(out Linkable linkable);
+            if (linkable.getLinkNum() > 1) linkable.WasShot();
+            else shouldDisappear = false;
         }
         Debug.Log(this.tag);
         Debug.Log(collision.tag);

@@ -112,7 +112,7 @@ public class BodyLink : MonoBehaviour, Linkable
         public void SetDestroyed()
         {
             isDestroyed = true;
-            _spriteRenderer.sprite = sprites[1];
+            //_spriteRenderer.sprite = sprites[1];
         }
         
         public void SetElectrocutedAnim()
