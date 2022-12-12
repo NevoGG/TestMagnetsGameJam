@@ -2977,14 +2977,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1150963682969344420, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1150963682969344421, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
-      propertyPath: speed
-      value: 200
-      objectReference: {fileID: 0}
     - target: {fileID: 7567976676351934151, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
       propertyPath: m_Name
       value: Player1Shot
@@ -3005,26 +2997,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7567976676351934151, guid: a397fdce7d499a04dac2329f780b79e4, type: 3}
   m_PrefabInstance: {fileID: 1150963682969344415}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1150963682969344422
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150963682969344417}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b07f718b4aa9b448aa8c6300b4d85e11, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1759380797721000311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3182,7 +3154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_TagString
@@ -3232,9 +3204,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3267046920117219794, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3267046920117219795, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_GravityScale
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872940750974386981, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3872940750974386981, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -3449,10 +3433,6 @@ PrefabInstance:
     - target: {fileID: 5170147391554032084, guid: bb1ee1004ac267442b74a75429f8038a, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7517127284548750628, guid: bb1ee1004ac267442b74a75429f8038a, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb1ee1004ac267442b74a75429f8038a, type: 3}
