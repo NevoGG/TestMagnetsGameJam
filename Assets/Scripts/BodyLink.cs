@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEditor;
@@ -81,9 +82,9 @@ public class BodyLink : MonoBehaviour, Linkable
 
         public void WasShot()
         {
-            if(!isDestroyed) snakeParent.DestroyTail(linkNum, tag);
+        if (!isDestroyed) snakeParent.DestroyTail(linkNum, tag);
         }
-        
+
         private void MoveAnimUpdate(Direction dir)
         {
             if (dir == curDirection || isElectrocuted) return; //if its the same as the one now, no need to change.
@@ -131,7 +132,7 @@ public class BodyLink : MonoBehaviour, Linkable
             isElectrocuted = false;
             //todo: set animation to regular, determined by MoveAnimUpdate
         }
-    }
+}
 
 
 

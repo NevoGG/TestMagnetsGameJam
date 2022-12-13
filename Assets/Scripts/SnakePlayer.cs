@@ -316,6 +316,7 @@ public class SnakePlayer : MonoBehaviour
     
     public void StonifyTail(int fromIdx, string tag)
     {
+        StartCoroutine(ShowExplosion(segments[fromIdx].transform.position));
         int toDestroy = segments.Count - fromIdx;
         for (int i = 0; i < toDestroy; i++)
         {
@@ -325,6 +326,14 @@ public class SnakePlayer : MonoBehaviour
             linkable.SetDestroyed();
             segments.RemoveAt(segments.Count - 1);
         }
+    }
+
+    IEnumerator ShowExplosion(Vector3 location)
+    {
+        GameObject expl = Instantiate(Resources.Load("Explosion")) as GameObject;
+        expl.transform.position = location;
+        yield return new WaitForSeconds(1f);
+        Destroy(expl);
     }
 
     private void ElectrocuteSnake()

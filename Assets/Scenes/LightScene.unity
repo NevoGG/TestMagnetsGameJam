@@ -2059,7 +2059,7 @@ Transform:
   m_GameObject: {fileID: 1718145353}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 13, y: 13, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1993111321}
@@ -3065,10 +3065,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 742443150}
     m_Modifications:
-    - target: {fileID: 1927560458804655620, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4307055142450522837, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3121,10 +3117,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8388985888501994302, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
-      propertyPath: m_TagString
-      value: Player2Body
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6ab6b293a366d64d8c542df2a120967, type: 3}
 --- !u!1 &1927560458804655616 stripped
@@ -3144,10 +3136,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1499671736}
     m_Modifications:
-    - target: {fileID: -1980987389359875164, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 3267046920117219799}
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_Name
       value: Player1Body
@@ -3155,10 +3143,6 @@ PrefabInstance:
     - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
-      propertyPath: m_TagString
-      value: Player1Body
       objectReference: {fileID: 0}
     - target: {fileID: 3050636117525674526, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
       propertyPath: m_RootOrder
@@ -3204,24 +3188,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3267046920117219794, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3267046920117219795, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3872940750974386981, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3872940750974386981, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
 --- !u!4 &3267046920117219791 stripped
 Transform:
@@ -3233,26 +3200,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 407203144640241514, guid: 4ef413de3d9dc9144996472c9a67d326, type: 3}
   m_PrefabInstance: {fileID: 3267046920117219790}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &3267046920117219799
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3267046920117219792}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2b629e8a50a5441f4bf58224dce700ff, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &4514525451116657004
 PrefabInstance:
   m_ObjectHideFlags: 0
