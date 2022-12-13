@@ -19,6 +19,7 @@ public class BallScript : MonoBehaviour
     private static string PLAYER2BODY_TAG = "Player2Body";
     private const string SHOT1_TAG = "Shot1";
     private const string SHOT2_TAG = "Shot2";
+    private static string BITE_TAG = "Bite";
 
     // Start is called before the first frame update
     void Start()
@@ -61,27 +62,16 @@ public class BallScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         bool shouldDisappear = true;
-        if ((CompareTag(SHOT2_TAG) && collision.CompareTag(SHOT2_TAG)) ||
-            (CompareTag(SHOT1_TAG) && collision.CompareTag(SHOT1_TAG))) shouldDisappear = false;
-        if (CompareTag(SHOT2_TAG) && collision.gameObject.CompareTag(PLAYER1_TAG))
-        {
-            Debug.Log("Shot head terminating game");
-            ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 1);
-        }
-        else if (CompareTag(SHOT1_TAG) && collision.gameObject.CompareTag(PLAYER2_TAG))
-        {
-            Debug.Log("Shot head terminating game");
-            ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 1);
-        }
+        //ignore bites
+        if (collision.CompareTag(BITE_TAG)) shouldDisappear = false;
+
         //if shot your own head, dont set active to false- to avoid bugs
         if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER2_TAG)) ||
-            (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1_TAG)))
-        {
-            Debug.Log("Shot own Head");
-            shouldDisappear = false;
-        }
+            (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1_TAG))) shouldDisappear = false;
+        
+        //if shot own body, state was shot unless it's the first link- to avoid bugs
         else if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER2BODY_TAG))
-            || (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1BODY_TAG)))
+                 || (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1BODY_TAG)))
         {
             collision.gameObject.TryGetComponent(out Linkable linkable);
             if (linkable.getLinkNum() > 1) linkable.WasShot();

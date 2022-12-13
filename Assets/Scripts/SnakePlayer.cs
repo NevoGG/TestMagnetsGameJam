@@ -14,7 +14,7 @@ public class SnakePlayer : MonoBehaviour
     [SerializeField] private Vector3 target;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject gameMusic;
-    [SerializeField] int GAP = 40;
+    [SerializeField] int GAP = 20;
     [SerializeField] int electrocutionTime = 5;
     
     //audio sources:
@@ -48,7 +48,6 @@ public class SnakePlayer : MonoBehaviour
     private static String PLAYER1BODY_TAG = "Player1Body";
     private static String PLAYER2BODY_TAG = "Player2Body";
     private static string BITE_TAG = "Bite";
-    private const string TIE = "Tie";
     private const string SHOT1_TAG = "Shot1";
     private const string SHOT2_TAG = "Shot2";
     private const float SHOT_DIST_FROM_HEAD = 1f;
@@ -119,9 +118,6 @@ public class SnakePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Attack();
-        
         //check if snake is electrocuted and if it can move
         if (isElectrocuted)
         {
@@ -131,24 +127,18 @@ public class SnakePlayer : MonoBehaviour
                 UnelectrocuteSnake();
             }
         }
+        Move();
+        Attack();
     }
 
-    void Move()
+    private void FixedUpdate()
     {
-        var dir = DetermineSnakeDirection();
-        if (dir == Vector3.up) animator.SetBool("Up",true);
-        else if (dir == Vector3.down) animator.SetBool("Down",true);
-        else if (dir == Vector3.left) animator.SetBool("Left",true);
-        else if (dir == Vector3.right) animator.SetBool("Right",true);
-        if (dir != Vector3.zero && curDir != Vector3.zero)
-        {
-            audioSource.PlayOneShot(changeDirectionSound);
-            saveDir = dir;
-        }
+        FixedMove();
+    }
 
-        
+    void FixedMove()
+    {
         int index = 0;
-        if (!IsInBoundaries()) ElectrocuteSnake();
         if(!isElectrocuted)
         {
             transform.position += saveDir * (speed * Time.deltaTime); //change head position
@@ -163,10 +153,39 @@ public class SnakePlayer : MonoBehaviour
                 index++;
             }
         }
+    }
+
+    void Move()
+    {
+        var dir = DetermineSnakeDirection();
+        if (dir != Vector3.zero && curDir != Vector3.zero)
+        {
+            audioSource.PlayOneShot(changeDirectionSound);
+            saveDir = dir;
+        }
+
+        if (!isElectrocuted)
+        {
+            //determine head animation:
+            if (saveDir == Vector3.up) animator.SetBool("Up", true);
+            else if (saveDir == Vector3.down) animator.SetBool("Down", true);
+            else if (saveDir == Vector3.left) animator.SetBool("Left", true);
+            else if (saveDir == Vector3.right) animator.SetBool("Right", true);
+        }
+        else
+        {
+            animator.SetBool("Up", false);
+            animator.SetBool("Down", false);
+            animator.SetBool("Left", false);
+            animator.SetBool("Right", false);
+            animator.SetBool("Electrocuted", true);
+        }
+
+        if (!IsInBoundaries()) ElectrocuteSnake();
         curDir = dir;
     }
-    
-    
+
+
     public Direction vecToDir(Vector3 vec)
     {
         if (vec == Vector3.up) return Direction.Up;
@@ -240,44 +259,54 @@ public class SnakePlayer : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D col)
     {
+        
+        //hit bite
         if (col.gameObject.CompareTag(BITE_TAG))
         {
             col.gameObject.SetActive(false);
             Grow();
             return;
         }
-
+        
+        //hit bullet
+        if (CompareTag(PLAYER1_TAG) && col.gameObject.CompareTag(SHOT2_TAG))
+        {
+            Debug.Log("Shot head terminating game");
+            ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 1);
+        }
+        else if (CompareTag(PLAYER2_TAG) && col.gameObject.CompareTag(SHOT1_TAG))
+        {
+            Debug.Log("Shot head terminating game");
+            ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 1);
+        }
+        
+        //hit another head
         if ((CompareTag(PLAYER1_TAG) && col.CompareTag(PLAYER2_TAG)) || (CompareTag(PLAYER2_TAG) && col.CompareTag(PLAYER1_TAG)))
         {
             ReadyScript.gameRunner.TerminateGame(null, 0);
         }
-        else if (CompareTag(PLAYER1_TAG))
+        
+        //player1 hit body
+        if (CompareTag(PLAYER1_TAG))
         {
             if (col.CompareTag(PLAYER1BODY_TAG))
             {
-                //col.TryGetComponent(out Linkable link);
-                //if (link.getLinkNum() > 7)
-                if (segments.Count > 4)
-                {
-                    ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
-                }
+                col.gameObject.TryGetComponent(out Linkable linkable);
+                if (linkable.getLinkNum() > 2) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0);
             }
             else if (col.CompareTag(PLAYER2BODY_TAG)) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player2.gameObject, 0); ;
         }
+        
+        //player2 hit body
         else if (CompareTag(PLAYER2_TAG))
         {
             if (col.CompareTag(PLAYER2BODY_TAG))
             {
-                //col.TryGetComponent(out Linkable link);
-                //if (link.getLinkNum() > 7)
-                if (segments.Count > 4)
-                {
-                        ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
-                }
+                col.gameObject.TryGetComponent(out Linkable linkable);
+                if (linkable.getLinkNum() > 2) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0);
             }
             else if (col.CompareTag(PLAYER1BODY_TAG)) ReadyScript.gameRunner.TerminateGame(SnakePlayer.player1.gameObject, 0); ;
         }
-        //if (toTerminate) ReadyScript.gameRunner.TerminateGame(gameObject, 0); //for yair:added, not the right winner
     }
 
     public void DestroyTail(int fromIdx, string tag)
@@ -318,8 +347,8 @@ public class SnakePlayer : MonoBehaviour
         // todo: start electrocution sound
         for (int i = 1; i < segments.Count; i++)
         {
-            if(!segments[i].TryGetComponent(out Linkable linkable)) Debug.Log("linkable failed in electrocute");;
-            linkable.SetElectrocutedAnim();
+            if(!segments[i].TryGetComponent(out Linkable linkable)) Debug.Log("linkable failed in unelectrocute");;
+            linkable.BackToNormAnim();
         }
     }
 
@@ -383,3 +412,12 @@ public class SnakePlayer : MonoBehaviour
         }
     }
 }
+
+//todo: bugs to fix:
+//make two heads the same size
+//set stone size
+//set electricity size
+//change spazm screen
+//when link forms, it shows for one milisec in the middle of screen
+//sound
+

@@ -37,6 +37,7 @@ public class BodyLink : MonoBehaviour, Linkable
         private Direction curDirection;
 
         private bool isDestroyed = false;
+        private bool isElectrocuted = false;
     
         
         private Rigidbody2D _rigidbody2D;
@@ -85,7 +86,7 @@ public class BodyLink : MonoBehaviour, Linkable
         
         private void MoveAnimUpdate(Direction dir)
         {
-            if (dir == curDirection) return; //if its the same as the one now, no need to change.
+            if (dir == curDirection || isElectrocuted) return; //if its the same as the one now, no need to change.
             switch (dir)
             {
                 case Direction.Down:
@@ -112,23 +113,26 @@ public class BodyLink : MonoBehaviour, Linkable
         public void SetDestroyed()
         {
             isDestroyed = true;
-            //_spriteRenderer.sprite = sprites[1];
+            animator.SetBool("Dead",true);
+            animator.SetBool("Left",false);
+            animator.SetBool("Right",false);
+            animator.SetBool("Up",false);
+            animator.SetBool("Down",false);
         }
         
         public void SetElectrocutedAnim()
         {
-            animator.SetBool("Electrocuted",true);
-            //todo: set animation to electrocuted
+            isElectrocuted = true;
+            animator.SetBool("Electrocuted", true);
         }
 
         public void BackToNormAnim()
         {
+            isElectrocuted = false;
             //todo: set animation to regular, determined by MoveAnimUpdate
         }
     }
 
-//todo: create sprites and animators for electrocuted, destroyed and four movement sides
-//todo: set electrocution sound
-//todo: fix animation- crashing unity
+
 
 

@@ -1090,7 +1090,7 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   spawnPoint: {fileID: 894741509}
   gameMusic: {fileID: 1227125149}
-  GAP: 40
+  GAP: 20
   electrocutionTime: 5
   shotSound: {fileID: 8300000, guid: a38b5b57b7bbedc4eae0cc64e4348f03, type: 3}
   changeDirectionSound: {fileID: 8300000, guid: c11920c52a68f7d47aeae8d06e3e8f84, type: 3}
@@ -2081,7 +2081,7 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   spawnPoint: {fileID: 1993111321}
   gameMusic: {fileID: 1227125149}
-  GAP: 40
+  GAP: 20
   electrocutionTime: 5
   shotSound: {fileID: 8300000, guid: a38b5b57b7bbedc4eae0cc64e4348f03, type: 3}
   changeDirectionSound: {fileID: 8300000, guid: c11920c52a68f7d47aeae8d06e3e8f84, type: 3}
