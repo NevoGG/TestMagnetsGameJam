@@ -121,10 +121,10 @@ public class ReadyScript : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         rBothScreen.GetComponent<SpriteRenderer>().enabled = false;
         gameObject.GetComponent<Animator>().enabled = true;
-        //Countdown.SetActive(true);
+        Countdown.SetActive(true);
         
         yield return new WaitForSeconds(3.9f);
-        //Countdown.SetActive(false);
+        Countdown.SetActive(false);
         gameObject.GetComponent<Animator>().enabled = false;
 
 
