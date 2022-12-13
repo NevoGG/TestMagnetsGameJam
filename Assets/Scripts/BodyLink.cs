@@ -111,17 +111,24 @@ public class BodyLink : MonoBehaviour, Linkable
             }
         }
 
-        public void SetDestroyed()
+        public void SetDestroyed(float delay)
         {
+            animator.SetBool("Left", false);
+            animator.SetBool("Right", false);
+            animator.SetBool("Up", false);
+            animator.SetBool("Down", false);
             isDestroyed = true;
-            animator.SetBool("Dead",true);
-            animator.SetBool("Left",false);
-            animator.SetBool("Right",false);
-            animator.SetBool("Up",false);
-            animator.SetBool("Down",false);
+            StartCoroutine(DecayOnDelay(delay));
+
         }
-        
-        public void SetElectrocutedAnim()
+        IEnumerator DecayOnDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            animator.SetBool("Dead", true);
+
+    }
+
+    public void SetElectrocutedAnim()
         {
             isElectrocuted = true;
             animator.SetBool("Electrocuted", true);
@@ -132,6 +139,7 @@ public class BodyLink : MonoBehaviour, Linkable
             isElectrocuted = false;
             //todo: set animation to regular, determined by MoveAnimUpdate
         }
+
 }
 
 

@@ -323,7 +323,7 @@ public class SnakePlayer : MonoBehaviour
             GameObject bodyLink = segments[segments.Count - 1].gameObject;
             if(!bodyLink.TryGetComponent(out Linkable linkable)) Debug.Log("Linkable failed on stonify");
             all_segments_stored.Add(bodyLink);
-            linkable.SetDestroyed();
+            linkable.SetDestroyed((toDestroy - i) * 0.2f);
             segments.RemoveAt(segments.Count - 1);
         }
     }
