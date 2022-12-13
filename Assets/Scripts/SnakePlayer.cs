@@ -2,19 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
-using JetBrains.Annotations;
+//using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UIElements;
+//using TMPro;
+//using UnityEngine.UIElements;
 
 //minor change
 public class SnakePlayer : MonoBehaviour
 {
-    [SerializeField] private Vector3 target;
+    //[SerializeField] private Vector3 target;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject gameMusic;
-    [SerializeField] int GAP = 20;
+    [SerializeField] int GAP = 12;
     [SerializeField] int electrocutionTime = 5;
     
     //audio sources:
@@ -23,10 +23,12 @@ public class SnakePlayer : MonoBehaviour
 
     private AudioSource audioSource;
     
+    // objects
     public GameObject snakeBody;
 
     private List<GameObject> segments;
     private List<GameObject> all_segments_stored;
+    private GameObject explosion;
     private List<KeyValuePair<Vector3, Direction>> positionHistory = new List<KeyValuePair<Vector3, Direction>>();
     
     public GameObject shot;
@@ -34,7 +36,7 @@ public class SnakePlayer : MonoBehaviour
     public float attackTimer = 0.35f;
     private float _currentAttackTimer;
     private bool _canAttack;
-    
+
     public static SnakePlayer player1;
     public static SnakePlayer player2;
     public Animator animator;
@@ -43,6 +45,7 @@ public class SnakePlayer : MonoBehaviour
     private Vector3 curDir;
     public Vector3 saveDir;
     
+    // tags
     private static string PLAYER1_TAG = "Player1";
     private static string PLAYER2_TAG = "Player2";
     private static String PLAYER1BODY_TAG = "Player1Body";
@@ -53,27 +56,16 @@ public class SnakePlayer : MonoBehaviour
     private const float SHOT_DIST_FROM_HEAD = 1f;
     
     //electrocution by borders parameters:
-
     private bool isElectrocuted = false;
     private float curTimeElectrocution = 0;
-    
 
-
-    // added for general code
+    // movement parameters:
     public int speed = 200;
-    private bool playing = false;
-    private bool calledOnce = true;
-    private int bodyDist = 25;
-    // <=====
-    
     private float maxX = 440;
-    private float minX = -440;
     private float maxY = 220;
-    private float minY = -220;
 
 
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = this.GetComponent<AudioSource>();
@@ -107,7 +99,6 @@ public class SnakePlayer : MonoBehaviour
         {
             transform.position = new Vector3(200, 0, 0);
         }
-        target = transform.position;
         saveDir = Vector3.zero;
 
         // amplify game music
@@ -115,7 +106,6 @@ public class SnakePlayer : MonoBehaviour
         music.volume = 1;
     }
     
-    // Update is called once per frame
     void Update()
     {
         //check if snake is electrocuted and if it can move
@@ -220,16 +210,16 @@ public class SnakePlayer : MonoBehaviour
 
     private bool IsInBoundaries()
     {
-        if (transform.position.x >= maxX || transform.position.x <= minX)
+        if (transform.position.x >= maxX || transform.position.x <= -maxX)
         {
-            float xValue = minX + 1;
+            float xValue = -maxX + 1;
             if (transform.position.x >= maxX) xValue = maxX - 1;
             transform.position = new Vector3(xValue, transform.position.y, transform.position.z);
             return false;
         }
-        if (transform.position.y >= maxY || transform.position.y <= minY)
+        if (transform.position.y >= maxY || transform.position.y <= -maxY)
         {
-            float yValue = minY + 1;
+            float yValue = -maxY + 1;
             if (transform.position.y >= maxY) yValue = maxY - 1;
             transform.position = new Vector3(transform.position.x, yValue, transform.position.z);
             return false;
@@ -244,17 +234,25 @@ public class SnakePlayer : MonoBehaviour
         //instantiate right type according to player
         if (CompareTag(PLAYER1_TAG)){bodyLink = Instantiate(Resources.Load("Player1Body")) as GameObject;}
         else{bodyLink = Instantiate(Resources.Load("Player2Body")) as GameObject;}
-        
         //set link fields
         if(!bodyLink.TryGetComponent(out Linkable linkable)) Debug.Log("Linkable failed"); //check if is linkable
         linkable.setSnakeParent(this);
         linkable.setLinkNum(segments.Count);
-        //
 
         GameObject lastLink = segments[segments.Count - 1];
         
         if(!lastLink.TryGetComponent(out Linkable last)) Debug.Log("linkable failed in grow");
         segments.Add(bodyLink);
+        //bodyLink.GetComponent<SpriteRenderer>().enabled = true;
+        StartCoroutine(ShowAddition(bodyLink));
+    }
+
+    IEnumerator ShowAddition(GameObject bodyLink)
+    {
+        yield return new WaitForSeconds(0.2f);
+        bodyLink.GetComponent<SpriteRenderer>().enabled = true;
+        bodyLink.GetComponent<CircleCollider2D>().enabled = true;
+
     }
 
     public void OnTriggerEnter2D(Collider2D col)
@@ -330,10 +328,12 @@ public class SnakePlayer : MonoBehaviour
 
     IEnumerator ShowExplosion(Vector3 location)
     {
-        GameObject expl = Instantiate(Resources.Load("Explosion")) as GameObject;
-        expl.transform.position = location;
+        if (explosion != null) Destroy(explosion); explosion = null;
+        explosion = Instantiate(Resources.Load("Explosion")) as GameObject;
+        explosion.transform.position = location;
         yield return new WaitForSeconds(1f);
-        Destroy(expl);
+        Destroy(explosion);
+        explosion = null;
     }
 
     private void ElectrocuteSnake()
@@ -341,7 +341,6 @@ public class SnakePlayer : MonoBehaviour
         isElectrocuted = true;
         animator.SetBool("Electrocuted",true);
         curTimeElectrocution = 0f;
-        // todo: start electrocution sound
         for (int i = 1; i < segments.Count; i++)
         {
             if(!segments[i].TryGetComponent(out Linkable linkable)) Debug.Log("linkable failed in electrocute");;
@@ -353,7 +352,6 @@ public class SnakePlayer : MonoBehaviour
     {
         isElectrocuted = false;
         curTimeElectrocution = 0f;
-        // todo: start electrocution sound
         for (int i = 1; i < segments.Count; i++)
         {
             if(!segments[i].TryGetComponent(out Linkable linkable)) Debug.Log("linkable failed in unelectrocute");;
@@ -379,7 +377,7 @@ public class SnakePlayer : MonoBehaviour
             
             _canAttack = false;
             attackTimer = 0f;
-            if (saveDir.y > 0) shot.transform.eulerAngles = new Vector3(0,0,90); //todo: make vectors not new
+            if (saveDir.y > 0) shot.transform.eulerAngles = new Vector3(0,0,90);
             else if (saveDir.y < 0) shot.transform.eulerAngles = new Vector3(0,0,-90);
             else if (saveDir.x < 0) shot.transform.eulerAngles = new Vector3(0,0,180);
             else if (saveDir.x > 0) shot.transform.eulerAngles = new Vector3(0,0,0);
@@ -419,14 +417,8 @@ public class SnakePlayer : MonoBehaviour
                 all_segments_stored.RemoveAt(i);
             }
         }
+
+        if (explosion != null) Destroy(explosion); explosion = null;
     }
 }
-
-//todo: bugs to fix:
-//make two heads the same size
-//set stone size
-//set electricity size
-//change spazm screen
-//when link forms, it shows for one milisec in the middle of screen
-//sound
 

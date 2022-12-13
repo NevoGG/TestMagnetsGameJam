@@ -13,19 +13,19 @@ public enum Direction
 public class BodyLink : MonoBehaviour, Linkable
 {
     [SerializeField] private List<Sprite> sprites;
-    private static string LEFT = "BlueLeft";
-    private static string RIGHT = "BlueRight";
-    private static string UP = "BlueDown";
-    private static string DOWN = "BlueDown";
-    private static string DEAD = "BlueElec";
-    private static string ELEC = "BlueElec";
+    //private static string LEFT = "BlueLeft";
+    //private static string RIGHT = "BlueRight";
+    //private static string UP = "BlueDown";
+    //private static string DOWN = "BlueDown";
+    //private static string DEAD = "BlueElec";
+    //private static string ELEC = "BlueElec";
     private static String PLAYER1_TAG = "Player1";
-    private static String PLAYER2_TAG = "Player2";
+    //private static String PLAYER2_TAG = "Player2";
     private static String PLAYER1BODY_TAG = "Player1Body";
     private static String PLAYER2BODY_TAG = "Player2Body";
-    private const string SHOT1_TAG = "Shot1";
-    private const string SHOT2_TAG = "Shot2";
-    private static string BITE_TAG = "Bite";
+    //private const string SHOT1_TAG = "Shot1";
+    //private const string SHOT2_TAG = "Shot2";
+    //private static string BITE_TAG = "Bite";
     public Animator animator;
         
 
@@ -33,8 +33,8 @@ public class BodyLink : MonoBehaviour, Linkable
         private SnakePlayer snakeParent;
         private int linkNum;
 
-        private Vector3 prevLocation;
-        private Vector3 curLocation;
+        //private Vector3 prevLocation;
+        //private Vector3 curLocation;
         private Direction curDirection;
 
         private bool isDestroyed = false;
@@ -44,11 +44,6 @@ public class BodyLink : MonoBehaviour, Linkable
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
         private SpriteRenderer _spriteRenderer;
-
-        private void SnakeDirectionSwitch(Direction newDir)
-        {
-            //change animationb and direction field
-        }
 
         private void Start()
         {
@@ -137,7 +132,6 @@ public class BodyLink : MonoBehaviour, Linkable
         public void BackToNormAnim()
         {
             isElectrocuted = false;
-            //todo: set animation to regular, determined by MoveAnimUpdate
         }
 
 }

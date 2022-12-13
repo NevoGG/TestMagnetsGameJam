@@ -43,7 +43,7 @@ public class ReadyScript : MonoBehaviour
     private bool firstTimePlaying;
     private GameObject curScreen = null;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         gameRunner = this;
@@ -57,7 +57,7 @@ public class ReadyScript : MonoBehaviour
         bites = new List<GameObject>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (!playing  && !showingWinner)
@@ -116,7 +116,7 @@ public class ReadyScript : MonoBehaviour
         }
     }
 
-    IEnumerator Wait2Start()  // only player 1 can call this
+    IEnumerator Wait2Start() 
     {
         yield return new WaitForSeconds(0.5f);
         rBothScreen.GetComponent<SpriteRenderer>().enabled = false;
@@ -203,7 +203,7 @@ public class ReadyScript : MonoBehaviour
         StartCoroutine(FlashReplayScreen());
     }
 
-    IEnumerator FlashReplayScreen()  // only player 1 can call this
+    IEnumerator FlashReplayScreen()
     {
         yield return new WaitForSeconds(2);
 

@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class WelcomeScript : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject welcomeScreen = null;
     public GameObject t1Screen = null;
     public GameObject t2Screen = null;
@@ -14,12 +13,6 @@ public class WelcomeScript : MonoBehaviour
     public GameObject t5Screen = null;
     public GameObject t6Screen = null;
     public GameObject t7Screen = null;
-
-    //public GameObject rNoneScreen = null;
-    //public GameObject rplayer1Screen = null;
-    //public GameObject rplayer2Screen = null;
-    //public GameObject rBothScreen = null;
-
 
     private int stage;
     private bool justChanged = false;
@@ -31,9 +24,6 @@ public class WelcomeScript : MonoBehaviour
         stage = 0;
     }
 
-    //SceneManager.LoadScene("LightScene");
-
-    // Update is called once per frame
     void Update()
     {
         if (stage == 0 && !justChanged && (Input.GetKey(KeyCode.RightShift)|| Input.GetKey(KeyCode.LeftShift)))
@@ -62,9 +52,9 @@ public class WelcomeScript : MonoBehaviour
         }
     }
 
-    IEnumerator WaitLittle()  // only player 1 can call this
+    IEnumerator WaitLittle()  // since each keystoke is more then one framerate
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         justChanged = false;
     }
 
