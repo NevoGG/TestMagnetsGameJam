@@ -123,7 +123,7 @@ public class ReadyScript : MonoBehaviour
         gameObject.GetComponent<Animator>().enabled = true;
         Countdown.SetActive(true);
         
-        yield return new WaitForSeconds(3.9f);
+        yield return new WaitForSeconds(4f);
         Countdown.SetActive(false);
         gameObject.GetComponent<Animator>().enabled = false;
 

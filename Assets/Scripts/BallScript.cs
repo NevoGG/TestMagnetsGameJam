@@ -13,6 +13,7 @@ public class BallScript : MonoBehaviour
     private float countUntilActive =0f;
     [SerializeField] float timeUntilActive = 0.01f;
 
+    // tags
     private static string PLAYER1_TAG = "Player1";
     private static string PLAYER2_TAG = "Player2";
     private static string PLAYER1BODY_TAG = "Player1Body";
@@ -21,7 +22,6 @@ public class BallScript : MonoBehaviour
     private const string SHOT2_TAG = "Shot2";
     private static string BITE_TAG = "Bite";
 
-    // Start is called before the first frame update
     void Start()
     {
         
@@ -31,7 +31,6 @@ public class BallScript : MonoBehaviour
     }
 
     
-    // Update is called once per frame
     void Update()
     {
         Debug.Log(isActive);
