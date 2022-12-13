@@ -70,8 +70,8 @@ public class BallScript : MonoBehaviour
             (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1_TAG))) shouldDisappear = false;
         
         //if shot own body, state was shot unless it's the first link- to avoid bugs
-        else if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER2BODY_TAG))
-                 || (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER1BODY_TAG)))
+        else if ((CompareTag(SHOT2_TAG) && collision.CompareTag(PLAYER1BODY_TAG))
+                 || (CompareTag(SHOT1_TAG) && collision.CompareTag(PLAYER2BODY_TAG)))
         {
             collision.gameObject.TryGetComponent(out Linkable linkable);
             if (linkable.getLinkNum() > 1) linkable.WasShot();
